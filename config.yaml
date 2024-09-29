@@ -1,0 +1,29 @@
+#外部字符串
+extend:
+  'http://ys.qtw.asia/lvdou_api.php/v1.vod'
+  #筛选开关
+filter_switch:
+  true
+  #筛选类型的第几个的下标(如:类型，地区，语言，年份....)
+filter_type_index:
+  1
+  #测试筛选的下标
+filter_num_index:
+  1
+  #搜索开关
+search_switch:
+  true
+  #搜索关键字
+search_keyword:
+  斗罗大陆
+  #测试的类型的下标从0开始(电影电视剧...)
+test_type_index:
+  0
+  #测试category的页数从1开始
+test_category_page:
+  '1'
+  #测试的视频下标，从0开始
+test_vod_index:
+  2
+  #测试视频源的下标从0开始
+test_vod_from_index: 0
