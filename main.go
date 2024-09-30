@@ -2,6 +2,8 @@ package main
 
 import (
 	"drpy_js/f_opt"
+	"drpy_js/ottos"
+	"drpy_js/tools"
 	"fmt"
 	"io/ioutil"
 	"os"
@@ -79,16 +81,7 @@ func Init() {
 	jsc.category_js = gjson.Get(js_content, "一级").String()
 	jsc.detail_js = gjson.Get(js_content, "二级").String()
 	jsc.search_js = gjson.Get(js_content, "搜索").String()
-	jsc.headers = getJscHeaders(gjson.Get(js_content, "headers").String())
-}
-func getJscHeaders(json_headers string) map[string]string {
-	headersMap := make(map[string]string)
-	keys := gjson.Get(json_headers, "@keys").Array()
-	for _, key := range keys {
-		headersMap[key.String()] = gjson.Get(json_headers, key.String()).String()
-	}
-
-	return headersMap
+	jsc.headers = tools.GetJscHeaders(gjson.Get(js_content, "headers").String())
 }
 
 // 读取yaml配置文件
@@ -171,8 +164,14 @@ func InitConfig() {
 }
 func main() {
 	Init()
+	vm_jsc := ottos.VM_Init()
 	if cfg.search_switch {
 
+		vm_jsc.Run(`var res=request("https://zhuiju6.cc/search/%E5%89%91%E6%9D%A5----------1---/"   ,{})
+console.log(res)
+
+
+    `)
 		fmt.Println("搜索部分")
 	} else {
 
