@@ -164,14 +164,40 @@ func InitConfig() {
 }
 func main() {
 	Init()
-	vm_jsc := ottos.VM_Init()
+	vm_jsc := ottos.VM_Init(jsc.headers)
 	if cfg.search_switch {
+		jsc.host = strings.TrimSpace(jsc.host)
+		if string(jsc.host[len(jsc.host)-1]) == "/" {
+			jsc.host = jsc.host[:len(jsc.host)-1]
+		}
+		input := ""
+		if strings.HasPrefix(jsc.searchUrl, "/") {
+			input = jsc.host + jsc.searchUrl
+		} else {
+			input = jsc.searchUrl
 
-		vm_jsc.Run(`var res=request("https://zhuiju6.cc/search/%E5%89%91%E6%9D%A5----------1---/"   ,{})
-console.log(res)
+		}
+		input = strings.ReplaceAll(input, `**`, cfg.search_keyword)
+		input = strings.ReplaceAll(input, `fypage`, "1")
+		vm_jsc.Set("input", input)
+		jsc.search_js = strings.TrimSpace(jsc.search_js)
+		if strings.HasPrefix(jsc.search_js, "js:") {
+			jsc.search_js = jsc.search_js[3:]
+			jsc.search_js = strings.TrimSpace(jsc.search_js)
+		}
 
+		res_search, err := vm_jsc.Run(jsc.search_js)
+		if err != nil {
+			fmt.Println(`res_search, err := vm_jsc.Run(jsc.search_js运行出错!`, err)
+			os.Exit(1)
+		}
+		fmt.Println(res_search)
 
-    `)
+		//
+		// vm_jsc.Run(`var res=request("https://zhuiju6.cc/search/%E5%89%91%E6%9D%A5----------1---/"   ,{})
+		// console.log(res)
+
+		// `)
 		fmt.Println("搜索部分")
 	} else {
 

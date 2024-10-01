@@ -1,2 +1,2 @@
 #!/bin/bash
-go run . "./jp.js"
+go run . "./zj5.js"

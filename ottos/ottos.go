@@ -8,6 +8,7 @@ import (
 	"os"
 	"strings"
 
+	"github.com/asters1/goquery"
 	"github.com/robertkrimen/otto"
 )
 
@@ -22,12 +23,56 @@ func Rtto_normal(js_str string) (string, error) {
 	return res.String(), nil
 
 }
-func VM_Init() *otto.Otto {
+
+func VM_Init(Headers map[string]string) *otto.Otto {
 	vm_jsc := otto.New()
+	jsp := make(map[string]func(call otto.FunctionCall) otto.Value)
+	jsp["pdfh"] = func(call otto.FunctionCall) otto.Value {
+		if len(call.ArgumentList) > 2 {
+		}
+		// html := call.Argument(0).String()
+		parse := call.Argument(1).String()
+		if !(parse == "") || !(strings.TrimSpace(parse) == "") {
+			res, _ := otto.ToValue("")
+			return res
+		}
+		res, _ := otto.ToValue("")
+		return res
+	}
+	jsp["pdfa"] = func(call otto.FunctionCall) otto.Value {
+		if len(call.ArgumentList) > 2 {
+		}
+		html := call.Argument(0).String()
+		parse := call.Argument(1).String()
+		if !(parse == "") || !(strings.TrimSpace(parse) == "") {
+			res, _ := otto.ToValue("")
+			return res
+		}
+		doc, err := goquery.NewDocumentFromReader(strings.NewReader(html))
+		if err != nil {
+			fmt.Println("goquery加载文档出错!!", err)
+			os.Exit(1)
+		}
+
+		res, _ := otto.ToValue("")
+		return res
+
+	}
+	jsp["pd"] = func(call otto.FunctionCall) otto.Value {
+
+		fmt.Println("jsp.pd")
+		fmt.Println("jsp.pd")
+		fmt.Println("jsp.pd")
+		res, _ := otto.ToValue("")
+		return res
+
+	}
+
+	vm_jsc.Set("jsp", jsp)
 	vm_jsc.Set("request", func(call otto.FunctionCall) otto.Value {
 		// fmt.Println(call.Argument(0).String())
 		// fmt.Println(len(call.ArgumentList))
-		Headers := make(map[string]string)
+		// Headers := make(map[string]string)
 		if len(call.ArgumentList) > 1 {
 			header_obj, err := call.Argument(1).Object().MarshalJSON()
 			Headers = tools.GetJscHeaders(string(header_obj))
