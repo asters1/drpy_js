@@ -2,6 +2,7 @@ package ottos
 
 import (
 	"drpy_js/tools"
+	"encoding/json"
 	"fmt"
 	"io/ioutil"
 	"net/http"
@@ -26,36 +27,81 @@ func Rtto_normal(js_str string) (string, error) {
 
 func VM_Init(Headers map[string]string) *otto.Otto {
 	vm_jsc := otto.New()
+	// res_func, _ := vm_jsc.Run(`
+	vm_jsc.Run(`
+function GetJsArray(jsonString){
+   return JSON.parse(jsonString);
+}
+  `)
+
 	jsp := make(map[string]func(call otto.FunctionCall) otto.Value)
 	jsp["pdfh"] = func(call otto.FunctionCall) otto.Value {
 		if len(call.ArgumentList) > 2 {
 		}
-		// html := call.Argument(0).String()
-		parse := call.Argument(1).String()
-		if !(parse == "") || !(strings.TrimSpace(parse) == "") {
-			res, _ := otto.ToValue("")
-			return res
-		}
-		res, _ := otto.ToValue("")
-		return res
-	}
-	jsp["pdfa"] = func(call otto.FunctionCall) otto.Value {
-		if len(call.ArgumentList) > 2 {
-		}
 		html := call.Argument(0).String()
 		parse := call.Argument(1).String()
-		if !(parse == "") || !(strings.TrimSpace(parse) == "") {
+		if strings.TrimSpace(parse) == "" {
+			fmt.Println("pdfh函数parse为空")
 			res, _ := otto.ToValue("")
 			return res
 		}
+
+		parse_slice := strings.Split(parse, "&&")
+		p_find_slice := parse_slice[:len(parse_slice)-1]
+		p_find := strings.Join(p_find_slice, " ")
+		// fmt.Println(parse)
+		// fmt.Println("ii")
 		doc, err := goquery.NewDocumentFromReader(strings.NewReader(html))
 		if err != nil {
 			fmt.Println("goquery加载文档出错!!", err)
 			os.Exit(1)
 		}
+		res_str := ""
+		if parse_slice[len(parse_slice)-1] == "Text" {
+			fmt.Println("Text")
 
-		res, _ := otto.ToValue("")
+			res_str = doc.Find(p_find).Text()
+
+		} else {
+			fmt.Println("Attr")
+			res_str, _ = doc.Find(p_find).Attr(parse_slice[len(parse_slice)-1])
+
+		}
+
+		res, _ := otto.ToValue(res_str)
 		return res
+	}
+	jsp["pdfa"] = func(call otto.FunctionCall) otto.Value {
+		// fmt.Println(len(call.ArgumentList))
+		if len(call.ArgumentList) > 2 {
+		}
+		html := call.Argument(0).String()
+		parse := call.Argument(1).String()
+		// fmt.Println(html)
+		parse = strings.ReplaceAll(parse, "&&", " ")
+		// fmt.Println(parse)
+		if strings.TrimSpace(parse) == "" {
+			fmt.Println("pdfa函数parse为空")
+			res, _ := otto.ToValue("")
+			return res
+		}
+		// fmt.Println("ii")
+		doc, err := goquery.NewDocumentFromReader(strings.NewReader(html))
+		if err != nil {
+			fmt.Println("goquery加载文档出错!!", err)
+			os.Exit(1)
+		}
+		html_list := []string{}
+		doc.Find(parse).Each(func(i int, s *goquery.Selection) {
+			html, _ := s.String()
+			html_list = append(html_list, html)
+
+		})
+		json_html, _ := json.Marshal(html_list)
+		// fmt.Println(json_html)
+		js_res_array, _ := vm_jsc.Call("GetJsArray", nil, string(json_html))
+
+		return js_res_array
 
 	}
 	jsp["pd"] = func(call otto.FunctionCall) otto.Value {

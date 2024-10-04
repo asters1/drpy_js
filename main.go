@@ -166,6 +166,8 @@ func main() {
 	Init()
 	vm_jsc := ottos.VM_Init(jsc.headers)
 	if cfg.search_switch {
+
+		// fmt.Println(jsc.search_js)
 		jsc.host = strings.TrimSpace(jsc.host)
 		if string(jsc.host[len(jsc.host)-1]) == "/" {
 			jsc.host = jsc.host[:len(jsc.host)-1]
@@ -186,12 +188,12 @@ func main() {
 			jsc.search_js = strings.TrimSpace(jsc.search_js)
 		}
 
-		res_search, err := vm_jsc.Run(jsc.search_js)
+		_, err := vm_jsc.Run(jsc.search_js)
 		if err != nil {
 			fmt.Println(`res_search, err := vm_jsc.Run(jsc.search_js运行出错!`, err)
 			os.Exit(1)
 		}
-		fmt.Println(res_search)
+		// fmt.Println(res_search)
 
 		//
 		// vm_jsc.Run(`var res=request("https://zhuiju6.cc/search/%E5%89%91%E6%9D%A5----------1---/"   ,{})
