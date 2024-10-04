@@ -58,7 +58,6 @@ function GetJsArray(jsonString){
 		}
 		res_str := ""
 		if parse_slice[len(parse_slice)-1] == "Text" {
-			fmt.Println("Text")
 
 			res_str = doc.Find(p_find).Text()
 
