@@ -7,6 +7,7 @@ import (
 	"io/ioutil"
 	"net/http"
 	"os"
+	"strconv"
 	"strings"
 
 	"github.com/asters1/goquery"
@@ -25,8 +26,26 @@ func Rtto_normal(js_str string) (string, error) {
 
 }
 
-func VM_Init(Headers map[string]string) *otto.Otto {
+type JsSource struct {
+	Host        string
+	HomeUrl     string
+	Url         string
+	Class_name  string
+	Class_url   string
+	DetailUrl   string
+	SearchUrl   string
+	Headers     map[string]string
+	Lazy_js     string
+	Category_js string
+	Detail_js   string
+	Search_js   string
+}
+
+func VM_Init(jsc JsSource) *otto.Otto {
+	Headers := jsc.Headers
+
 	vm_jsc := otto.New()
+	vm_jsc.Set("jsc", jsc)
 	// res_func, _ := vm_jsc.Run(`
 	vm_jsc.Run(`
 function GetJsArray(jsonString){
@@ -46,27 +65,43 @@ function GetJsArray(jsonString){
 			return res
 		}
 
-		parse_slice := strings.Split(parse, "&&")
-		p_find_slice := parse_slice[:len(parse_slice)-1]
-		p_find := strings.Join(p_find_slice, " ")
-		// fmt.Println(parse)
-		// fmt.Println("ii")
+		p_find_slice := strings.Split(parse, "&&")
 		doc, err := goquery.NewDocumentFromReader(strings.NewReader(html))
 		if err != nil {
 			fmt.Println("goquery加载文档出错!!", err)
 			os.Exit(1)
 		}
+		doc_find := doc.Find("*")
+		// fmt.Println(doc_find.String())
 		res_str := ""
-		if parse_slice[len(parse_slice)-1] == "Text" {
+		for i := 0; i < len(p_find_slice); i++ {
+			index := 0
+			p_find := ""
+			if strings.Contains(p_find_slice[i], ":eq(") {
+				p_find = p_find_slice[i][:strings.Index(p_find_slice[i], ":eq(")]
+				index, _ = strconv.Atoi(p_find_slice[i][strings.Index(p_find_slice[i], ":eq(")+4 : strings.LastIndex(p_find_slice[i], ")")])
 
-			res_str = doc.Find(p_find).Text()
+			} else {
+				p_find = p_find_slice[i]
+			}
+			if i == len(p_find_slice)-1 {
+				if p_find == "Text" {
 
-		} else {
-			fmt.Println("Attr")
-			res_str, _ = doc.Find(p_find).Attr(parse_slice[len(parse_slice)-1])
+					res_str = doc_find.Text()
+				} else {
+
+					res_str, _ = doc_find.Attr(p_find)
+				}
+
+			} else {
+				doc_find = doc_find.Find(p_find).Eq(index)
+			}
 
 		}
 
+		if res_str == "" {
+			res_str = "pdfh函数返回结果为undefined或者为空"
+		}
 		res, _ := otto.ToValue(res_str)
 		return res
 	}
@@ -104,10 +139,12 @@ function GetJsArray(jsonString){
 
 	}
 	jsp["pd"] = func(call otto.FunctionCall) otto.Value {
-
-		fmt.Println("jsp.pd")
-		fmt.Println("jsp.pd")
-		fmt.Println("jsp.pd")
+		if len(call.ArgumentList) > 2 {
+		}
+		html := call.Argument(0).String()
+		parse := call.Argument(1).String()
+		res_str, _ := vm_jsc.Call("jsp.pdfh", nil, html, parse)
+		fmt.Println("aa" + res_str.String())
 		res, _ := otto.ToValue("")
 		return res
 

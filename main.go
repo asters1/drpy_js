@@ -15,21 +15,6 @@ import (
 	"github.com/go-yaml/yaml"
 )
 
-type jsSource struct {
-	host        string
-	homeUrl     string
-	url         string
-	class_name  string
-	class_url   string
-	detailUrl   string
-	searchUrl   string
-	headers     map[string]string
-	lazy_js     string
-	category_js string
-	detail_js   string
-	search_js   string
-}
-
 type config struct {
 	extend              string
 	filter_switch       bool
@@ -43,7 +28,7 @@ type config struct {
 	test_vod_from_index int
 }
 
-var jsc jsSource
+var jsc ottos.JsSource
 var cfg config
 
 func Init() {
@@ -70,18 +55,18 @@ func Init() {
 
 	}
 	js_content := strings.TrimSpace(string(content))
-	jsc.host = gjson.Get(js_content, "host").String()
-	jsc.homeUrl = gjson.Get(js_content, "homeUrl").String()
-	jsc.url = gjson.Get(js_content, "url").String()
-	jsc.class_name = gjson.Get(js_content, "class_name").String()
-	jsc.class_url = gjson.Get(js_content, "class_url").String()
-	jsc.detailUrl = gjson.Get(js_content, "detailUrl").String()
-	jsc.searchUrl = gjson.Get(js_content, "searchUrl").String()
-	jsc.lazy_js = gjson.Get(js_content, "lazy_js").String()
-	jsc.category_js = gjson.Get(js_content, "一级").String()
-	jsc.detail_js = gjson.Get(js_content, "二级").String()
-	jsc.search_js = gjson.Get(js_content, "搜索").String()
-	jsc.headers = tools.GetJscHeaders(gjson.Get(js_content, "headers").String())
+	jsc.Host = gjson.Get(js_content, "host").String()
+	jsc.HomeUrl = gjson.Get(js_content, "homeUrl").String()
+	jsc.Url = gjson.Get(js_content, "url").String()
+	jsc.Class_name = gjson.Get(js_content, "class_name").String()
+	jsc.Class_url = gjson.Get(js_content, "class_url").String()
+	jsc.DetailUrl = gjson.Get(js_content, "detailUrl").String()
+	jsc.SearchUrl = gjson.Get(js_content, "searchUrl").String()
+	jsc.Lazy_js = gjson.Get(js_content, "lazy_js").String()
+	jsc.Category_js = gjson.Get(js_content, "一级").String()
+	jsc.Detail_js = gjson.Get(js_content, "二级").String()
+	jsc.Search_js = gjson.Get(js_content, "搜索").String()
+	jsc.Headers = tools.GetJscHeaders(gjson.Get(js_content, "headers").String())
 }
 
 // 读取yaml配置文件
@@ -164,31 +149,31 @@ func InitConfig() {
 }
 func main() {
 	Init()
-	vm_jsc := ottos.VM_Init(jsc.headers)
+	vm_jsc := ottos.VM_Init(jsc)
 	if cfg.search_switch {
 
 		// fmt.Println(jsc.search_js)
-		jsc.host = strings.TrimSpace(jsc.host)
-		if string(jsc.host[len(jsc.host)-1]) == "/" {
-			jsc.host = jsc.host[:len(jsc.host)-1]
+		jsc.Host = strings.TrimSpace(jsc.Host)
+		if string(jsc.Host[len(jsc.Host)-1]) == "/" {
+			jsc.Host = jsc.Host[:len(jsc.Host)-1]
 		}
 		input := ""
-		if strings.HasPrefix(jsc.searchUrl, "/") {
-			input = jsc.host + jsc.searchUrl
+		if strings.HasPrefix(jsc.SearchUrl, "/") {
+			input = jsc.Host + jsc.SearchUrl
 		} else {
-			input = jsc.searchUrl
+			input = jsc.SearchUrl
 
 		}
 		input = strings.ReplaceAll(input, `**`, cfg.search_keyword)
 		input = strings.ReplaceAll(input, `fypage`, "1")
 		vm_jsc.Set("input", input)
-		jsc.search_js = strings.TrimSpace(jsc.search_js)
-		if strings.HasPrefix(jsc.search_js, "js:") {
-			jsc.search_js = jsc.search_js[3:]
-			jsc.search_js = strings.TrimSpace(jsc.search_js)
+		jsc.Search_js = strings.TrimSpace(jsc.Search_js)
+		if strings.HasPrefix(jsc.Search_js, "js:") {
+			jsc.Search_js = jsc.Search_js[3:]
+			jsc.Search_js = strings.TrimSpace(jsc.Search_js)
 		}
 
-		_, err := vm_jsc.Run(jsc.search_js)
+		_, err := vm_jsc.Run(jsc.Search_js)
 		if err != nil {
 			fmt.Println(`res_search, err := vm_jsc.Run(jsc.search_js运行出错!`, err)
 			os.Exit(1)
