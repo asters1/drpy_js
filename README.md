@@ -141,11 +141,11 @@ var rule = {
 
 ```json
 [
-{"title":"吞噬星空",       //标题
-"img":"https://pic.youkupic.co...m.jpg",            //图片链接
-"desc":"更新至103集",          //描述
-"url":"https://zhuiju4.cc/vplay/42492-1-1/"",            //详情链接
-"content":"简介之类的"     //详情
+{"title":"吞噬星空",  //标题
+"img":"https://pic.youkupic.co...m.jpg",  //图片链接
+"desc":"更新至103集", //描述
+"url":"https://zhuiju4.cc/vplay/42492-1-1/",//详情链接
+"content":"简介之类的"  //详情
 },
 {"title":"title",
 "img":"img",
