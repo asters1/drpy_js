@@ -144,8 +144,13 @@ function GetJsArray(jsonString){
 		html := call.Argument(0).String()
 		parse := call.Argument(1).String()
 		res, _ := vm_jsc.Call("jsp.pdfh", nil, html, parse)
-		res_str := res.String()
-		if strings.HasSuffix(res_str, "/") {
+		res_str := strings.TrimSpace(res.String())
+
+		fmt.Println(res_str)
+		if res_str[:2] == `//` {
+			res_str = "http:" + res_str
+
+		} else if strings.HasSuffix(res_str, "/") {
 			res_str = jsc.Host + res_str
 
 		}
