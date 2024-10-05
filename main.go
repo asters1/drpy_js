@@ -56,6 +56,10 @@ func Init() {
 	}
 	js_content := strings.TrimSpace(string(content))
 	jsc.Host = gjson.Get(js_content, "host").String()
+	jsc.Host = strings.TrimSpace(jsc.Host)
+	if string(jsc.Host[len(jsc.Host)-1]) == "/" {
+		jsc.Host = jsc.Host[:len(jsc.Host)-1]
+	}
 	jsc.HomeUrl = gjson.Get(js_content, "homeUrl").String()
 	jsc.Url = gjson.Get(js_content, "url").String()
 	jsc.Class_name = gjson.Get(js_content, "class_name").String()
@@ -153,10 +157,6 @@ func main() {
 	if cfg.search_switch {
 
 		// fmt.Println(jsc.search_js)
-		jsc.Host = strings.TrimSpace(jsc.Host)
-		if string(jsc.Host[len(jsc.Host)-1]) == "/" {
-			jsc.Host = jsc.Host[:len(jsc.Host)-1]
-		}
 		input := ""
 		if strings.HasPrefix(jsc.SearchUrl, "/") {
 			input = jsc.Host + jsc.SearchUrl

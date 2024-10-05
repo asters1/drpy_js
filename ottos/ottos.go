@@ -143,10 +143,14 @@ function GetJsArray(jsonString){
 		}
 		html := call.Argument(0).String()
 		parse := call.Argument(1).String()
-		res_str, _ := vm_jsc.Call("jsp.pdfh", nil, html, parse)
-		fmt.Println("aa" + res_str.String())
-		res, _ := otto.ToValue("")
-		return res
+		res, _ := vm_jsc.Call("jsp.pdfh", nil, html, parse)
+		res_str := res.String()
+		if strings.HasSuffix(res_str, "/") {
+			res_str = jsc.Host + res_str
+
+		}
+		result, _ := otto.ToValue(res_str)
+		return result
 
 	}
 
