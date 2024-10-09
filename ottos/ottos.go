@@ -48,9 +48,56 @@ func VM_Init(jsc JsSource) *otto.Otto {
 	vm_jsc.Set("jsc", jsc)
 	// res_func, _ := vm_jsc.Run(`
 	vm_jsc.Run(`
-function GetJsArray(jsonString){
-   return JSON.parse(jsonString);
-}
+  Object.prototype.includes=function(subkey){
+    for (var key in this){
+      if (this.hasOwnProperty(key)){
+        if(this[key]==subkey){
+          return true
+        }
+      }
+    }
+    return false
+  }
+  function GetJsArray(jsonString){
+    // let a="";
+    return JSON.parse(jsonString);
+  }
+  function setResult(d){
+    if(!Array.isArray(d)){
+      return JSON.stringify([])
+    }
+    VODS = [];
+    d.forEach(function (it){
+      var obj = {
+        vod_id:it.url||'',
+        vod_name: it.title||'',
+        vod_remarks: it.desc||'',
+        vod_content: it.content||'',
+        vod_pic: it.pic_url||it.img||'',
+      };
+      var keys = Object.keys(it);
+      if(keys.includes('tname')){
+        obj.type_name = it.tname||'';
+      }
+      if(keys.includes('tid')){
+        obj.type_id = it.tid||'';
+      }
+      if(keys.includes('year')){
+        obj.vod_year = it.year||'';
+      }
+      if(keys.includes('actor')){
+        obj.vod_actor = it.actor||'';
+      }
+      if(keys.includes('director')){
+        obj.vod_director = it.director||'';
+      }
+      if(keys.includes('area')){
+        obj.vod_area = it.area||'';
+      }
+      VODS.push(obj);
+    });
+    return JSON.stringify(VODS)
+  }
   `)
 
 	jsp := make(map[string]func(call otto.FunctionCall) otto.Value)
@@ -146,7 +193,7 @@ function GetJsArray(jsonString){
 		res, _ := vm_jsc.Call("jsp.pdfh", nil, html, parse)
 		res_str := strings.TrimSpace(res.String())
 
-		fmt.Println(res_str)
+		// fmt.Println(res_str)
 		if res_str[:2] == `//` {
 			res_str = "http:" + res_str
 

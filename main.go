@@ -3,6 +3,7 @@ package main
 import (
 	"drpy_js/f_opt"
 	"drpy_js/ottos"
+	"drpy_js/parseJson"
 	"drpy_js/tools"
 	"fmt"
 	"io/ioutil"
@@ -173,18 +174,13 @@ func main() {
 			jsc.Search_js = strings.TrimSpace(jsc.Search_js)
 		}
 
-		_, err := vm_jsc.Run(jsc.Search_js)
+		res_search, err := vm_jsc.Run(jsc.Search_js)
+		parseJson.GetJsonMap(res_search.String())
 		if err != nil {
 			fmt.Println(`res_search, err := vm_jsc.Run(jsc.search_js运行出错!`, err)
 			os.Exit(1)
 		}
-		// fmt.Println(res_search)
 
-		//
-		// vm_jsc.Run(`var res=request("https://zhuiju6.cc/search/%E5%89%91%E6%9D%A5----------1---/"   ,{})
-		// console.log(res)
-
-		// `)
 		fmt.Println("搜索部分")
 	} else {
 
