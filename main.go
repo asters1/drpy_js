@@ -11,6 +11,8 @@ import (
 	"os/exec"
 	"strings"
 
+	"github.com/fatih/color"
+	"github.com/robertkrimen/otto"
 	"github.com/tidwall/gjson"
 
 	"github.com/go-yaml/yaml"
@@ -31,7 +33,25 @@ type config struct {
 
 var jsc ottos.JsSource
 var cfg config
+var vm_jsc *otto.Otto
 
+func JXJS(js_str string) string {
+	js_str = strings.ReplaceAll(js_str, "let ", "var ")
+	js_str = strings.TrimSpace(js_str)
+	if strings.HasPrefix(js_str, "js:") {
+		js_str = js_str[3:]
+		js_str = strings.TrimSpace(js_str)
+		res, err := vm_jsc.Run(js_str)
+		if err != nil {
+			fmt.Println(`JXJS函数运行出错!`, err)
+			os.Exit(1)
+		}
+		return res.String()
+	} else {
+		return ""
+	}
+
+}
 func Init() {
 	InitConfig()
 	if len(os.Args) < 2 {
@@ -154,9 +174,14 @@ func InitConfig() {
 }
 func main() {
 	Init()
-	vm_jsc := ottos.VM_Init(jsc)
+	green := color.New(color.FgGreen).SprintFunc()
+
+	vm_jsc = ottos.VM_Init(jsc)
+	test_vod := make(map[string]string)
 	if cfg.search_switch {
 
+		fmt.Println("\r\n================搜索=================\r\n ")
+		fmt.Println("你测试的搜索关键字是==>" + cfg.search_keyword + "\r\n")
 		// fmt.Println(jsc.search_js)
 		input := ""
 		if strings.HasPrefix(jsc.SearchUrl, "/") {
@@ -168,23 +193,30 @@ func main() {
 		input = strings.ReplaceAll(input, `**`, cfg.search_keyword)
 		input = strings.ReplaceAll(input, `fypage`, "1")
 		vm_jsc.Set("input", input)
-		jsc.Search_js = strings.TrimSpace(jsc.Search_js)
-		if strings.HasPrefix(jsc.Search_js, "js:") {
-			jsc.Search_js = jsc.Search_js[3:]
-			jsc.Search_js = strings.TrimSpace(jsc.Search_js)
+		res_search := JXJS(jsc.Search_js)
+		res_search_map := parseJson.GetSearchJsonMap(res_search)
+		for i := 0; i < len(res_search_map); i++ {
+			fmt.Println("=====================================")
+			V := res_search_map[i]
+			fmt.Println(green("名称:" + V["vod_name"]))
+			fmt.Println(green(" ID :" + V["vod_id"]))
+			fmt.Println("封面:" + V["vod_pic"])
+			fmt.Println("描述:" + V["vod_remarks"])
+			if i == cfg.test_vod_index {
+				test_vod = V
+			}
 		}
 
-		res_search, err := vm_jsc.Run(jsc.Search_js)
-		parseJson.GetJsonMap(res_search.String())
-		if err != nil {
-			fmt.Println(`res_search, err := vm_jsc.Run(jsc.search_js运行出错!`, err)
-			os.Exit(1)
-		}
-
-		fmt.Println("搜索部分")
 	} else {
 
 		fmt.Println("home部分")
 	}
+	fmt.Println("=====================================")
+	fmt.Println(green("你测试的视频名称为==>  " + test_vod["vod_name"]))
+	fmt.Println(green("你测试的视频 ID 为==>  " + test_vod["vod_id"]))
+	fmt.Println("\r\n================二级=================\r\n ")
+	fmt.Println(green("你测试的视频 ID 为==>  " + test_vod["vod_id"]))
+	vm_jsc.Set("input", test_vod["vod_id"])
+	JXJS(jsc.Detail_js)
 
 }
