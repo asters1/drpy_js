@@ -1,5 +1,4 @@
-import './tools.js'
-var input
+import './drpy.js'
 var vod = {}
 var test_play_url = ''
 var test_play_flag = ''
@@ -12,7 +11,7 @@ if (cfg.skip_request) {
     rule.pg = cfg.test_page
     rule.wd = cfg.search_keyword
     var res_search = JSON.parse(await JxSearch(rule))
-    // #print(res)
+    // console.log(res_search)
     for (let i = 0; i < res_search.list.length; i++) {
       let V = res_search.list[i]
       printGreen('序号:  ' + i)
@@ -28,9 +27,9 @@ if (cfg.skip_request) {
   } else {
   }
 }
-
 printGreen('\r\n你测试的视频是:' + vod['vod_name'] + '[' + vod['vod_id'] + ']')
 printGreen('================二级=================\r\n')
+
 rule.orId = vod['vod_id']
 rule.input = vod['vod_id']
 rule.tab_exclude = '猜你|喜欢|下载|剧情|热播'
@@ -83,6 +82,3 @@ printGreen('\r\n================lazy=================\r\n')
 var playObj = { url: test_play_url, flag: test_play_flag, flags: [] }
 playObj.input = test_play_url
 JxPlay(playObj)
-
-// console.log(test_play_url)
-// console.log(test_play_flag)

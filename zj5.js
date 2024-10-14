@@ -204,35 +204,35 @@ var rule = {
     log('获取二级详情页发生错误:' + e.message)
   }
   `,
-  搜索: '.fed-part-layout&&dl;.fed-part-eone&&Text;.fed-list-pics.fed-lazy&&data-original;.fed-deta-images&&Text;.fed-rims-info&&href', //第一个是列表，第二个是标题，第三个是Pic,第四个是描述，第五个是链接，
+  // 搜索: '.fed-part-layout&&dl;.fed-part-eone&&Text;.fed-list-pics.fed-lazy&&data-original;.fed-deta-images&&Text;.fed-rims-info&&href', //第一个是列表，第二个是标题，第三个是Pic,第四个是描述，第五个是链接，
 
-  // 搜索: `js:
-  // // console.log("aaaa")
-  // pdfh=jsp.pdfh;
-  // pdfa=jsp.pdfa;
-  // pd=jsp.pd;
-  // var d = [];
-  // var html = request(input);
-  //
-  // var list=pdfa(html,".fed-part-layout&&dl")
-  // for(var i=0;i<=list.length-1;i++){
-  //   var v={}
-  //   v.url=pd(list[i],".fed-rims-info&&href")
-  //   v.title=pdfh(list[i],".fed-part-eone&&Text")
-  //   v.desc=pdfh(list[i],".fed-deta-images&&Text")
-  //   v.content=pdfh(list[i],".fed-part-eone&&Text")
-  //   v.img=pd(list[i],".fed-list-pics.fed-lazy&&data-original")
-  //   d.push(v)
-  //
-  //   // console.log(JSON.stringify(v))
-  // }
-  // setResult(d)
-  //
-  //
-  //
-  //
-  //
-  // `, //第一个是列表，第二个是标题，第三个是Pic,第四个是描述，第五个是链接，
+  搜索: `js:
+  // console.log("aaaa")
+  pdfh=jsp.pdfh;
+  pdfa=jsp.pdfa;
+  pd=jsp.pd;
+  var d = [];
+  var html = request(input);
+
+  var list=pdfa(html,".fed-part-layout&&dl")
+  for(var i=0;i<=list.length-1;i++){
+    var v={}
+    v.url=pd(list[i],".fed-rims-info&&href")
+    v.title=pdfh(list[i],".fed-part-eone&&Text")
+    v.desc=pdfh(list[i],".fed-deta-images&&Text")
+    v.content=pdfh(list[i],".fed-part-eone&&Text")
+    v.img=pd(list[i],".fed-list-pics.fed-lazy&&data-original")
+    d.push(v)
+
+    // console.log(JSON.stringify(v))
+  }
+  setResult(d)
+
+
+
+
+
+  `, //第一个是列表，第二个是标题，第三个是Pic,第四个是描述，第五个是链接，
   lazy: `js:
   var play_u=""
   var html1=request(input)
@@ -248,7 +248,7 @@ var rule = {
     url:play_u,
     jx:0
   }
-  console.log(input)
+  // console.log(input)
 
 
 `,
