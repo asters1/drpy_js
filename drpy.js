@@ -681,9 +681,10 @@ async function detailParse(detailObj) {
   } else if (p && typeof p === 'object') {
     let tt1 = new Date().getTime()
     if (!html) {
-      html = getHtml(MY_URL)
+      MY_URL = detailObj.input
+      html = await getHtml(MY_URL)
     }
-    print(`二级${MY_URL}仅获取源码耗时:${new Date().getTime() - tt1}毫秒`)
+    // print(`二级${MY_URL}仅获取源码耗时:${new Date().getTime() - tt1}毫秒`)
     let _impJQP = false
     let _ps
     if (p.is_json) {
@@ -699,7 +700,7 @@ async function detailParse(detailObj) {
     } else {
       print('二级默认jq')
       _ps = parseTags.jq
-      // print('二级默认jsp');
+      // print('二级默认jsp')
       // _ps = parseTags.jsp;
     }
     if (_ps === parseTags.jq) {
@@ -711,12 +712,12 @@ async function detailParse(detailObj) {
       let c$ = cheerio.load(html)
       // print(`二级${MY_URL}仅c$源码耗时:${(new Date()).getTime()-ttt1}毫秒`);
       html = { rr: c$, ele: c$('html')[0] }
-      print(
-        `二级${MY_URL}仅cheerio.load源码耗时:${new Date().getTime() - ttt1}毫秒`,
-      )
+      // print(
+      //   `二级${MY_URL}仅cheerio.load源码耗时:${new Date().getTime() - ttt1}毫秒`,
+      // )
     }
     let tt2 = new Date().getTime()
-    print(`二级${MY_URL}获取并装载源码耗时:${tt2 - tt1}毫秒`)
+    // print(`二级${MY_URL}获取并装载源码耗时:${tt2 - tt1}毫秒`)
     _pdfa = _ps.pdfa
     _pdfh = _ps.pdfh
     _pd = _ps.pd
@@ -785,13 +786,13 @@ async function detailParse(detailObj) {
         let p_tab = p.tabs.split(';')[0]
         // console.log(p_tab);
         let vHeader = _pdfa(html, p_tab)
-        console.log(vHeader.length)
+        // console.log(vHeader.length)
         let tab_text = p.tab_text || 'body&&Text'
         // print('tab_text:'+tab_text);
         let new_map = {}
         for (let v of vHeader) {
           let v_title = _pdfh(v, tab_text).trim()
-          console.log(v_title)
+          // console.log(v_title)
           if (tab_exclude && new RegExp(tab_exclude).test(v_title)) {
             continue
           }
@@ -806,7 +807,7 @@ async function detailParse(detailObj) {
           playFrom.push(v_title)
         }
       }
-      console.log(JSON.stringify(playFrom))
+      // console.log(JSON.stringify(playFrom))
     } else {
       playFrom = ['道长在线']
     }
@@ -867,14 +868,14 @@ async function detailParse(detailObj) {
           let vodList = []
           try {
             vodList = _pdfa(html, p1)
-            console.log('len(vodList):' + vodList.length)
+            // console.log('len(vodList):' + vodList.length)
           } catch (e) {
             // console.log(e.message);
           }
           let new_vod_list = []
           // print('tab_ext:'+tab_ext);
           let tabName = tab_ext ? _pdfh(html, tab_ext) : tab_name
-          console.log(tabName)
+          // console.log(tabName)
           // console.log('cheerio解析Text');
           // 此处存在性能问题: pt版2000集需要650毫秒,俊版1300毫秒 特么的优化不动 主要后面定位url的我拿他没法
           // 主要性能问题在于 _pd(it, list_url, MY_URL)
@@ -896,9 +897,9 @@ async function detailParse(detailObj) {
               )
             }
             new_vod_list = forceOrder(new_vod_list, '', (x) => x.split('$')[0])
-            console.log(
-              `drpy影响性能代码共计列表数循环次数:${vodList.length},耗时:${new Date().getTime() - tt1}毫秒`,
-            )
+            // console.log(
+            //   `drpy影响性能代码共计列表数循环次数:${vodList.length},耗时:${new Date().getTime() - tt1}毫秒`,
+            // )
           }
           let vlist = new_vod_list.join('#')
           vod_tab_list.push(vlist)
@@ -921,13 +922,6 @@ async function detailParse(detailObj) {
   }
   let t2 = new Date().getTime()
   // console.log(`加载二级界面${MY_URL}耗时:${t2 - t1}毫秒`)
-  // print(vod);
-  // vod = vodDeal(vod)
-  // // print(vod);
-  // return JSON.stringify({
-  //   list: [vod],
-  // })
-  // return vod
   return JSON.stringify(vod)
 }
 /**
@@ -1104,37 +1098,39 @@ async function getHtml(url) {
       obj.headers.cookie !== cookie
     ) {
       obj.headers['Cookie'] = cookie
-      // log('历史有小写过期的cookie,更新过验证后的cookie')
+      log('历史有小写过期的cookie,更新过验证后的cookie')
     } else if (
       obj.headers &&
       obj.headers.Cookie &&
       obj.headers.Cookie !== cookie
     ) {
       obj.headers['Cookie'] = cookie
-      // log('历史有大写过期的cookie,更新过验证后的cookie')
+      log('历史有大写过期的cookie,更新过验证后的cookie')
     } else if (!obj.headers) {
       obj.headers = { Cookie: cookie }
-      // log('历史无headers,更新过验证后的含cookie的headers')
+      log('历史无headers,更新过验证后的含cookie的headers')
     }
   }
   let html = await getCode(url, obj)
   return html
 }
 print = function (data) {
-  data = data || ''
-  if (typeof data == 'object' && Object.keys(data).length > 0) {
-    try {
-      data = JSON.stringify(data)
+  if (cfg.print_switch) {
+    data = data || ''
+    if (typeof data == 'object' && Object.keys(data).length > 0) {
+      try {
+        data = JSON.stringify(data)
+        console.log(data)
+      } catch (e) {
+        // console.log('print:'+e.message);
+        console.log(typeof data + ':' + data.length)
+        return
+      }
+    } else if (typeof data == 'object' && Object.keys(data).length < 1) {
+      console.log('null object')
+    } else {
       console.log(data)
-    } catch (e) {
-      // console.log('print:'+e.message);
-      console.log(typeof data + ':' + data.length)
-      return
     }
-  } else if (typeof data == 'object' && Object.keys(data).length < 1) {
-    console.log('null object')
-  } else {
-    console.log(data)
   }
 }
 // log = print
@@ -1249,7 +1245,7 @@ const defaultParser = {
   },
 }
 /**
- *  pdfh原版优化,能取style属性里的图片链接
+ *  pdfh原版优���,能取style属性里的图片链接
  * @param html 源码
  * @param parse 解析表达式
  * @returns {string|*}
@@ -1390,6 +1386,45 @@ function md5(text) {
   return CryptoJS.MD5(text).toString()
 }
 
+/**
+ * 强制正序算法
+ * @param lists  待正序列表
+ * @param key 正序键
+ * @param option 单个元素处理函数
+ * @returns {*}
+ */
+function forceOrder(lists, key, option) {
+  let start = Math.floor(lists.length / 2)
+  let end = Math.min(lists.length - 1, start + 1)
+  if (start >= end) {
+    return lists
+  }
+  let first = lists[start]
+  let second = lists[end]
+  if (key) {
+    try {
+      first = first[key]
+      second = second[key]
+    } catch (e) {}
+  }
+  if (option && typeof option === 'function') {
+    try {
+      first = option(first)
+      second = option(second)
+    } catch (e) {}
+  }
+  first += ''
+  second += ''
+  // console.log(first,second);
+  if (first.match(/(\d+)/) && second.match(/(\d+)/)) {
+    let num1 = Number(first.match(/(\d+)/)[1])
+    let num2 = Number(second.match(/(\d+)/)[1])
+    if (num1 > num2) {
+      lists.reverse()
+    }
+  }
+  return lists
+}
 /**
  * 字符串按指定编码
  * @param input

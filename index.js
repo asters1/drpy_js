@@ -73,6 +73,8 @@ if (vod_play_from_list.length == vod_play_url_list.length) {
   }
 } else {
   console.log('vod_play_from和vod_play_url长度不相等，请检查!')
+  // console.log('vod_play_from长度为' + vod_play_from.length)
+  // console.log('vod_play_url长度为' + vod_play_url.length)
   process.exit(1)
 }
 

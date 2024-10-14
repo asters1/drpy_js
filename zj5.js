@@ -149,61 +149,66 @@ var rule = {
   // 一级:'.v-list&&div.item;p&&Text;img&&src;;a&&href', //一级的内容是推荐或者点播时候的一级匹配
   一级: '.v-list&&div.item;p&&Text;img&&data-src;;a&&href', //一级的内容是推荐或者点播时候的一级匹配
   // 二级:二级,
-  二级: `js:
-  // console.log(input)
-  //  
-  pdfh = jsp.pdfh;
-  pd = jsp.pd;
-  pdfa = jsp.pdfa;
-  try {
-    VOD={}
-    let html1 = request(input);
-    VOD.vod_id=input;
-    VOD.vod_name=pdfh(html1,".fed-deta-content&&h3&&Text")
-    VOD.vod_pic=pd(html1,".fed-list-pics&&data-original")
-    VOD.vod_actor=pdfh(html1,".fed-deta-content&&.fed-part-rows&&li&&Text").replace("主演：","").trim()
-    VOD.vod_area=pdfh(html1,".fed-deta-content&&.fed-part-rows&&li:eq(4)&&Text").replace("地区：","").trim()
-    VOD.vod_year=pdfh(html1,".fed-deta-content&&.fed-part-rows&&li:eq(2)&&a&&Text")
-    VOD.vod_remarks=pdfh(html1,".fed-list-remarks&&Text")
-    VOD.vod_director=pdfh(html1,".fed-deta-content&&.fed-part-rows&&li:eq(1)&&Text").replace("导演：","").trim()
-    VOD.vod_content=pdfh(html1,".fed-conv-text.fed-padding.fed-text-muted&&Text")
-    let play_from=[]
-    let pf=pdfa(html1,".fed-tabs-boxs&&.fed-tabs-foot&&li")
-    for(let i=0;i<pf.length;i++){
-      let t=pdfh(pf[i],"a&&Text")
-      play_from.push(t)
-    }
-    VOD.vod_play_from = play_from.join('$$$');
-    let u_list=pdfa(html1,".fed-tabs-btm.fed-padding")
-    var play_urls=[]
-    for(let i=0;i<u_list.length;i++){
-      var source_list=[]
+  //
+  // 或者 {title:'',img:'',desc:'',content:'',tabs:'',lists:'',tab_text:'body&&Text',list_text:'body&&Text',list_url:'a&&href'} 同海阔dr二级
 
-      let us=pdfa(u_list[i],"li")
-      for(let j=0;j<us.length;j++){
-        let v_n=pdfh(us[j],"a&&Text")
-        let v_u=pd(us[j],"a&&href")
-        let data=v_n+"$"+v_u
-        source_list.push(data)
-
-      }
-      play_urls.push(source_list.join("#"))
-      // play_from.push(t)
-
-    }
-    // console.log(play_urls)
-    VOD.vod_play_url=play_urls.join("$$$")
-
-
-
-
-
-
-    // console.log(JSON.stringify(VOD));
-  } catch (e) {
-    log('获取二级详情页发生错误:' + e.message)
-  }
-  `,
+  二级: {
+    title: '.fed-deta-content&&h3&&Text',
+    img: '.fed-list-pics&&data-original',
+    desc: '.fed-list-remarks&&Text',
+    content: '.fed-conv-text.fed-padding.fed-text-muted&&Text',
+    tabs: '.fed-tabs-boxs&&.fed-tabs-foot&&li',
+    lists: '.fed-tabs-btm.fed-padding&&li',
+    list_text: 'a&&Text',
+  },
+  // 二级: `js:
+  // // console.log(input)
+  // //
+  // pdfh = jsp.pdfh;
+  // pd = jsp.pd;
+  // pdfa = jsp.pdfa;
+  // try {
+  //   VOD={}
+  //   let html1 = request(input);
+  //   VOD.vod_id=input;
+  //   VOD.vod_name=pdfh(html1,".fed-deta-content&&h3&&Text")
+  //   VOD.vod_pic=pd(html1,".fed-list-pics&&data-original")
+  //   VOD.vod_actor=pdfh(html1,".fed-deta-content&&.fed-part-rows&&li&&Text").replace("主演：","").trim()
+  //   VOD.vod_area=pdfh(html1,".fed-deta-content&&.fed-part-rows&&li:eq(4)&&Text").replace("地区：","").trim()
+  //   VOD.vod_year=pdfh(html1,".fed-deta-content&&.fed-part-rows&&li:eq(2)&&a&&Text")
+  //   VOD.vod_remarks=pdfh(html1,".fed-list-remarks&&Text")
+  //   VOD.vod_director=pdfh(html1,".fed-deta-content&&.fed-part-rows&&li:eq(1)&&Text").replace("导演：","").trim()
+  //   VOD.vod_content=pdfh(html1,".fed-conv-text.fed-padding.fed-text-muted&&Text")
+  //   let play_from=[]
+  //   let pf=pdfa(html1,".fed-tabs-boxs&&.fed-tabs-foot&&li")
+  //   for(let i=0;i<pf.length;i++){
+  //     let t=pdfh(pf[i],"a&&Text")
+  //     play_from.push(t)
+  //   }
+  //   VOD.vod_play_from = play_from.join('$$$');
+  //   let u_list=pdfa(html1,".fed-tabs-btm.fed-padding")
+  //   var play_urls=[]
+  //   for(let i=0;i<u_list.length;i++){
+  //     var source_list=[]
+  //
+  //     let us=pdfa(u_list[i],"li")
+  //     for(let j=0;j<us.length;j++){
+  //       let v_n=pdfh(us[j],"a&&Text")
+  //       let v_u=pd(us[j],"a&&href")
+  //       let data=v_n+"$"+v_u
+  //       source_list.push(data)
+  //
+  //     }
+  //     play_urls.push(source_list.join("#"))
+  //     // play_from.push(t)
+  //
+  //   }
+  //   // console.log(play_urls)
+  //   VOD.vod_play_url=play_urls.join("$$$")
+  // } catch (e) {
+  //   log('获取二级详情页发生错误:' + e.message)
+  // }
+  // `,
   // 搜索: '.fed-part-layout&&dl;.fed-part-eone&&Text;.fed-list-pics.fed-lazy&&data-original;.fed-deta-images&&Text;.fed-rims-info&&href', //第一个是列表，第二个是标题，第三个是Pic,第四个是描述，第五个是链接，
 
   搜索: `js:
