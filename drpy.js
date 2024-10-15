@@ -88,14 +88,23 @@ function W_File(file_path, str) {
 }
 //打印绿色字体
 function printGreen(str) {
-  console.log('\x1B[32m' + str + '\x1B[0m')
+  process.stdout.write('\x1B[32m' + str + '\x1B[0m')
 }
 //打印灰色字体
 function printGrey(str) {
-  console.log(chalk.rgb(128, 128, 128)(str))
+  process.stdout.write(chalk.rgb(128, 128, 128)(str))
   // console.log('\x1B[2m' + str + '\x1B[0m')
   // console.log('\x1B[30m' + str + '\x1B[0m')
 }
+//打印品红字体
+function printMagenta(str) {
+  process.stdout.write('\x1B[35m' + str + '\x1B[0m')
+}
+//打印默认不换行
+function printDefault(str) {
+  process.stdout.write(str)
+}
+
 async function evals(str) {
   W_File('./debug.js', str)
   var result
@@ -925,7 +934,7 @@ async function detailParse(detailObj) {
   return JSON.stringify(vod)
 }
 /**
- * 选集播放点击事件解析
+ * 选���播放点击事件解析
  * @param playObj
  * @returns {string}
  */
@@ -1752,6 +1761,8 @@ globalThis.cfg = cfg
 //函数
 globalThis.printGreen = printGreen
 globalThis.printGrey = printGrey
+globalThis.printMagenta = printMagenta
+globalThis.printDefault = printDefault
 globalThis.encodeUrl = urlencode
 globalThis.urlencode = urlencode
 //可以在rule中使用的变量与函数
