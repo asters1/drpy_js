@@ -20,8 +20,8 @@ if (cfg.skip_request) {
       // printGrey('序号==>' + i)
       printGreen('名称:  ' + V['vod_name'] + '\n')
       printGreen(' ID :  ' + V['vod_id'] + '\n')
-      printGrey('封面:  ' + V['vod_pic'])
-      printGrey('描述:  ' + V['vod_remarks'])
+      printGrey('封面:  ' + V['vod_pic'] + '\n')
+      printGrey('描述:  ' + V['vod_remarks'] + '\n')
       if (i == cfg.test_vod_index) {
         vod = V
       }
@@ -109,6 +109,19 @@ if (cfg.skip_request) {
 
         // process.exit(0)
         console.log(res_cate_obj)
+        let vod_list = res_cate_obj.list
+        for (let i = 0; i < vod_list.length; i++) {
+          let V = vod_list[i]
+          printGreen('序号:  ' + i + '\n')
+          // printGrey('序号==>' + i)
+          printGreen('名称:  ' + V['vod_name'] + '\n')
+          printGreen(' ID :  ' + V['vod_id'] + '\n')
+          printGrey('封面:  ' + V['vod_pic'] + '\n')
+          printGrey('描述:  ' + V['vod_remarks'] + '\n')
+          if (i == cfg.test_vod_index) {
+            vod = V
+          }
+        }
       }
     } else {
       console.log('class_name和class_url长度不相等，请检查!')

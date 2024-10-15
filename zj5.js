@@ -10,9 +10,6 @@ var rule = {
   // searchUrl:'/search?q=**&p=fypage',
   searchUrl: '/search/**----------fypage---/',
   searchable: 2,
-  quickSearch: 0,
-  filterable: 1,
-  filterable: 1, //是否启用分类筛选,
   filter_url: '-{{fl.area}}-{{fl.by}}--{{fl.lang}}-------{{fl.year}}/',
   // '{{fl.cateId}}-{{fl.area}}-{{fl.by or "time"}}-{{fl.class}}-{{fl.lang}}-{{fl.letter}}---fypage---{{fl.year}}',
   filter: {
@@ -224,90 +221,18 @@ var rule = {
       },
     ],
   },
-  图片来源:
-    '@Referer=https://v.ikanbot.com/@User-Agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/118.0.0.0 Safari/537.36',
+  图片来源: '',
+  // '@Referer=https://v.ikanbot.com/@User-Agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/118.0.0.0 Safari/537.36',
   //图片替换: "//=>http://",
   filter_def: '',
   filter获取方法: `
-  let value = [];
-  $('ul').eq(2).find('li').each(function() {
-    // console.log($(this).text());
-    let n = $(this).text().trim();
-    value.push({
-      'n': n, 'v': n
-    });
-  });
-  // 电影执行:
-  let data = {'movie': [{'key': 'tag', 'name': '标签', 'value': value}]};
-  console.log(JSON.stringify(data));
-
-  //剧集执行:
-  let data = {'tv': [{'key': 'tag', 'name': '标签', 'value': value}]};
-  console.log(JSON.stringify(data));
   `,
   // headers: '',
   play_parse: true,
   double: true,
-  tab_remove: [
-    'wjm3u8',
-    'ikm3u8',
-    'sdm3u8',
-    'M3U8',
-    'jinyingm3u8',
-    'fsm3u8',
-    'ukm3u8',
-  ], //移除某个线路及相关的选集
-  tab_order: [
-    'bfzym3u8',
-    '1080zyk',
-    'kuaikan',
-    'lzm3u8',
-    'ffm3u8',
-    'snm3u8',
-    'qhm3u8',
-    'gsm3u8',
-    'zuidam3u8',
-    'bjm3u8',
-    'wolong',
-    'xlm3u8',
-    'yhm3u8',
-  ], //线路顺序,按里面的顺序优先，没写的依次排后面
-  tab_rename: {
-    bfzym3u8: '暴风',
-    '1080zyk': '优质',
-    kuaikan: '快看',
-    lzm3u8: '量子',
-    ffm3u8: '非凡',
-    snm3u8: '索尼',
-    qhm3u8: '奇虎',
-    haiwaikan: '海外看',
-    gsm3u8: '光速',
-    zuidam3u8: '最大',
-    bjm3u8: '八戒',
-    wolong: '卧龙',
-    xlm3u8: '新浪',
-    yhm3u8: '樱花',
-    tkm3u8: '天空',
-    jsm3u8: '极速',
-    wjm3u8: '无尽',
-    sdm3u8: '闪电',
-    kcm3u8: '快车',
-    jinyingm3u8: '金鹰',
-    fsm3u8: '飞速',
-    tpm3u8: '淘片',
-    lem3u8: '鱼乐',
-    dbm3u8: '百度',
-    tomm3u8: '番茄',
-    ukm3u8: 'U酷',
-    ikm3u8: '爱坤',
-    hnzym3u8: '��牛资源',
-    hnm3u8: '红牛',
-    '68zy_m3u8': '68',
-    kdm3u8: '酷点',
-    bdxm3u8: '北斗星',
-    hhm3u8: '豪华',
-    kbm3u8: '快播',
-  }, //线路名替换如:lzm3u8替换为量子资源
+  tab_remove: [], //移除某个线路及相关的选集
+  tab_order: [], //线路顺序,按里面的顺序优先，没写的依次排后面
+  tab_rename: {}, //线路名替换如:lzm3u8替换为量子资源
   推荐: '.v-list;div.item;*;*;*;*', //这里可以为空，这样点播不会有内容
   //第一个是列表，第二个是标题，第三个是Pic,第四个是描述，第五个是链接，
 
@@ -318,7 +243,7 @@ pdfh = jsp.pdfh
 pdfa = jsp.pdfa
 pd = jq.pd
 var d = []
-var html1 = await request(input)
+var html1 =  request(input)
 var list = pdfa(html1, '.fed-list-info&&li')
 for (var i = 0; i <= list.length - 1; i++) {
   var v = {}
