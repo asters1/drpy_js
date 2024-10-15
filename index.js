@@ -48,7 +48,9 @@ if (cfg.skip_request) {
     var class_url_list = class_url.split('&')
     if (class_url_list.length == class_name_list.length) {
       for (let i = 0; i < class_name_list.length; i++) {
-        console.log('\n' + class_name_list[i] + '[' + class_url_list[i] + ']\n')
+        printGreen(
+          '\n' + class_name_list[i] + '[' + class_url_list[i] + ']\n\n',
+        )
         if (i == cfg.test_type_index) {
           test_class.class_name = class_name_list[i]
           test_class.class_url = class_url_list[i]
@@ -76,13 +78,36 @@ if (cfg.skip_request) {
                 test_filter.value = t_list[k]
               }
             }
-            printDefault('\n')
+            printDefault('\n\n')
           }
         }
       }
-      printGreen('\n\n你测试的是分类是:')
-
+      printGreen('\n\n你测试的分类是:')
       printMagenta(test_class.class_name + '[' + test_class.class_url + ']\n')
+      if (test_filter.key != undefined) {
+        printGreen('你测试的筛选是:key->')
+        printMagenta(test_filter.key)
+        printGreen(',name->')
+        printMagenta(test_filter.name)
+        printGreen(',value->')
+        printMagenta(JSON.stringify(test_filter.value) + '\n')
+        test_filter.extend = {}
+        test_filter.extend[test_filter.key] = test_filter.value.v
+
+        // {\"url\":\"https://zhuiju4.cc/vodshow/fyclassfyfilter.html\",\"一级\":\"js:/nrequest(/\"http://localhost:8080/one_/\"+JSON.stringify(cateObj))/nrequest(/\"http://localhost:8080/input=/\"+input)/n/n  \",\"tid\":\"movie\",\"pg\":1,\"filter\":true,\"extend\":{}}
+        var cateObj = {}
+        cateObj.url = rule.host + rule.url
+        cateObj.一级 = rule.一级
+        cateObj.tid = test_class.class_url
+        cateObj.pg = cfg.test_page
+        cateObj.filter = true
+        cateObj.extend = test_filter.extend
+        // console.log(JSON.stringify(cateObj))
+        printGreen('================一级=================\n\n')
+        var res = await JxCategory(cateObj)
+        // process.exit(0)
+        console.log(res)
+      }
     } else {
       console.log('class_name和class_url长度不相等，请检查!')
     }
@@ -96,6 +121,8 @@ printGreen('================二级=================\n\n')
 rule.orId = vod['vod_id']
 rule.input = vod['vod_id']
 rule.tab_exclude = '猜你|喜欢|下载|剧情|热播'
+
+// process.exit(0)
 var res_detail = JSON.parse(await JxDetail(rule))
 
 printGrey('\n//视频ID(vod_id)\n')

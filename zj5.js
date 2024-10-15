@@ -2,66 +2,232 @@ var rule = {
   title: `追剧5网`,
   // host:'https://v.ikanbot.com',
   host: 'https://zhuiju4.cc',
-  url: '/hot/index-fyclass-fyfilter-p-fypage.html[/hot/index-fyclass-fyfilter.html]',
+  url: '/show/fyclassfyfilter',
+  headers: { 'User-Agent': 'IOS_UA', Referer: 'https://zhuiju4.cc' },
+  class_name: '电影&电视剧&动漫',
+  class_url: 'dianying&dianshiju&dongman',
   //https://www.ikanbot.com/search?q=%E6%96%97%E7%BD%97%E5%A4%A7&p=2
   // searchUrl:'/search?q=**&p=fypage',
   searchUrl: '/search/**----------fypage---/',
   searchable: 2,
   quickSearch: 0,
   filterable: 1,
-  filter_url: '{{fl.tag}}',
+  filterable: 1, //是否启用分类筛选,
+  filter_url: '-{{fl.area}}-{{fl.by}}--{{fl.lang}}-------{{fl.year}}/',
+  // '{{fl.cateId}}-{{fl.area}}-{{fl.by or "time"}}-{{fl.class}}-{{fl.lang}}-{{fl.letter}}---fypage---{{fl.year}}',
+  filter: {
+    dianying: [
+      {
+        key: 'area',
+        name: '地区',
+        value: [
+          { n: '全部', v: '' },
+          { n: '大陆', v: '中国大陆' },
+          { n: '香港', v: '中国香港' },
+          { n: '美国', v: '美国' },
+          { n: '法国', v: '法国' },
+          { n: '英国', v: '英国' },
+          { n: '日本', v: '日本' },
+          { n: '韩国', v: '韩国' },
+          { n: '德国', v: '德国' },
+          { n: '泰国', v: '泰国' },
+          { n: '印度', v: '印度' },
+          { n: '意大利', v: '意大利' },
+          { n: '加拿大', v: '加拿大' },
+          { n: '其他', v: '其他' },
+        ],
+      },
+      {
+        key: 'lang',
+        name: '语言',
+        value: [
+          { n: '全部', v: '' },
+          { n: '国语', v: '国语' },
+          { n: '英语', v: '英语' },
+          { n: '粤语', v: '粤语' },
+          { n: '闽南语', v: '闽南语' },
+          { n: '韩语', v: '韩语' },
+          { n: '日语', v: '日语' },
+          { n: '法语', v: '法语' },
+          { n: '德语', v: '德语' },
+          { n: '其它', v: '其它' },
+        ],
+      },
+      {
+        key: 'year',
+        name: '年份',
+        value: [
+          { n: '全部', v: '' },
+          { n: '2024', v: '2024' },
+          { n: '2023', v: '2023' },
+          { n: '2022', v: '2022' },
+          { n: '2021', v: '2021' },
+          { n: '2020', v: '2020' },
+          { n: '2019', v: '2019' },
+          { n: '2018', v: '2018' },
+          { n: '2017', v: '2017' },
+          { n: '2016', v: '2016' },
+          { n: '2015', v: '2015' },
+          { n: '2014', v: '2014' },
+          { n: '2013', v: '2013' },
+          { n: '2012', v: '2012' },
+          { n: '2011', v: '2011' },
+          { n: '2010', v: '2010' },
+        ],
+      },
+      {
+        key: 'by',
+        name: '排序',
+        value: [
+          { n: '时间', v: 'time' },
+          { n: '人气', v: 'hits' },
+          { n: '评分', v: 'score' },
+        ],
+      },
+    ],
+    dianshiju: [
+      {
+        key: 'area',
+        name: '地区',
+        value: [
+          { n: '全部', v: '' },
+          { n: '大陆', v: '中国大陆' },
+          { n: '香港', v: '中国香港' },
+          { n: '美国', v: '美国' },
+          { n: '法国', v: '法国' },
+          { n: '英国', v: '英国' },
+          { n: '日本', v: '日本' },
+          { n: '韩国', v: '韩国' },
+          { n: '德国', v: '德国' },
+          { n: '泰国', v: '泰国' },
+          { n: '印度', v: '印度' },
+          { n: '意大利', v: '意大利' },
+          { n: '加拿大', v: '加拿大' },
+          { n: '其他', v: '其他' },
+        ],
+      },
+      {
+        key: 'lang',
+        name: '语言',
+        value: [
+          { n: '全部', v: '' },
+          { n: '国语', v: '国语' },
+          { n: '英语', v: '英语' },
+          { n: '粤语', v: '粤语' },
+          { n: '闽南语', v: '闽南语' },
+          { n: '韩语', v: '韩语' },
+          { n: '日语', v: '日语' },
+          { n: '法语', v: '法语' },
+          { n: '德语', v: '德语' },
+          { n: '其它', v: '其它' },
+        ],
+      },
+      {
+        key: 'year',
+        name: '年份',
+        value: [
+          { n: '全部', v: '' },
+          { n: '2024', v: '2024' },
+          { n: '2023', v: '2023' },
+          { n: '2022', v: '2022' },
+          { n: '2021', v: '2021' },
+          { n: '2020', v: '2020' },
+          { n: '2019', v: '2019' },
+          { n: '2018', v: '2018' },
+          { n: '2017', v: '2017' },
+          { n: '2016', v: '2016' },
+          { n: '2015', v: '2015' },
+          { n: '2014', v: '2014' },
+          { n: '2013', v: '2013' },
+          { n: '2012', v: '2012' },
+          { n: '2011', v: '2011' },
+          { n: '2010', v: '2010' },
+        ],
+      },
+      {
+        key: 'by',
+        name: '排序',
+        value: [
+          { n: '时间', v: 'time' },
+          { n: '人气', v: 'hits' },
+          { n: '评分', v: 'score' },
+        ],
+      },
+    ],
+    dongman: [
+      {
+        key: 'area',
+        name: '地区',
+        value: [
+          { n: '全部', v: '' },
+          { n: '大陆', v: '中国大陆' },
+          { n: '香港', v: '中国香港' },
+          { n: '美国', v: '美国' },
+          { n: '法国', v: '法国' },
+          { n: '英国', v: '英国' },
+          { n: '日本', v: '日本' },
+          { n: '韩国', v: '韩国' },
+          { n: '德国', v: '德国' },
+          { n: '泰国', v: '泰国' },
+          { n: '印度', v: '印度' },
+          { n: '意大利', v: '意大利' },
+          { n: '加拿大', v: '加拿大' },
+          { n: '其他', v: '其他' },
+        ],
+      },
+      {
+        key: 'lang',
+        name: '语言',
+        value: [
+          { n: '全部', v: '' },
+          { n: '国语', v: '国语' },
+          { n: '英语', v: '英语' },
+          { n: '粤语', v: '粤语' },
+          { n: '闽南语', v: '闽南语' },
+          { n: '韩语', v: '韩语' },
+          { n: '日语', v: '日语' },
+          { n: '法语', v: '法语' },
+          { n: '德语', v: '德语' },
+          { n: '其它', v: '其它' },
+        ],
+      },
+      {
+        key: 'year',
+        name: '年份',
+        value: [
+          { n: '全部', v: '' },
+          { n: '2024', v: '2024' },
+          { n: '2023', v: '2023' },
+          { n: '2022', v: '2022' },
+          { n: '2021', v: '2021' },
+          { n: '2020', v: '2020' },
+          { n: '2019', v: '2019' },
+          { n: '2018', v: '2018' },
+          { n: '2017', v: '2017' },
+          { n: '2016', v: '2016' },
+          { n: '2015', v: '2015' },
+          { n: '2014', v: '2014' },
+          { n: '2013', v: '2013' },
+          { n: '2012', v: '2012' },
+          { n: '2011', v: '2011' },
+          { n: '2010', v: '2010' },
+        ],
+      },
+      {
+        key: 'by',
+        name: '排序',
+        value: [
+          { n: '时间', v: 'time' },
+          { n: '人气', v: 'hits' },
+          { n: '评分', v: 'score' },
+        ],
+      },
+    ],
+  },
   图片来源:
     '@Referer=https://v.ikanbot.com/@User-Agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/118.0.0.0 Safari/537.36',
   //图片替换: "//=>http://",
-  filter: {
-    movie: [
-      {
-        key: 'tag',
-        name: '标签',
-        value: [
-          { n: '热门', v: '热门' },
-          { n: '最新', v: '最新' },
-          { n: '经典', v: '经典' },
-          { n: '豆瓣高分', v: '豆瓣高分' },
-          { n: '冷门佳片', v: '冷门佳片' },
-          { n: '华语', v: '华语' },
-          { n: '欧美', v: '欧美' },
-          { n: '韩国', v: '韩国' },
-          { n: '日本', v: '日本' },
-          { n: '动作', v: '动作' },
-          { n: '喜剧', v: '喜剧' },
-          { n: '爱情', v: '爱情' },
-          { n: '科幻', v: '科幻' },
-          { n: '悬疑', v: '悬疑' },
-          { n: '恐怖', v: '恐怖' },
-          { n: '治愈', v: '治愈' },
-          { n: '豆瓣top250', v: '豆瓣top250' },
-        ],
-      },
-    ],
-    tv: [
-      {
-        key: 'tag',
-        name: '标签',
-        value: [
-          { n: '热门', v: '热门' },
-          { n: '美剧', v: '美剧' },
-          { n: '英剧', v: '英剧' },
-          { n: '韩剧', v: '韩剧' },
-          { n: '日剧', v: '日剧' },
-          { n: '国产剧', v: '国产剧' },
-          { n: '港剧', v: '港剧' },
-          { n: '日本动画', v: '日本动画' },
-          { n: '综艺', v: '综艺' },
-          { n: '纪录片', v: '纪录片' },
-        ],
-      },
-    ],
-  },
-  filter_def: {
-    movie: { tag: '热门' },
-    tv: { tag: '国产剧' },
-  },
+  filter_def: '',
   filter获取方法: `
   let value = [];
   $('ul').eq(2).find('li').each(function() {
@@ -80,9 +246,6 @@ var rule = {
   console.log(JSON.stringify(data));
   `,
   // headers: '',
-  headers: { 'User-Agent': 'IOS_UA', Referer: 'https://zhuiju4.cc' },
-  class_name: '电影&剧集',
-  class_url: 'movie&tv',
   play_parse: true,
   double: true,
   tab_remove: [
@@ -137,7 +300,7 @@ var rule = {
     tomm3u8: '番茄',
     ukm3u8: 'U酷',
     ikm3u8: '爱坤',
-    hnzym3u8: '红牛资源',
+    hnzym3u8: '��牛资源',
     hnm3u8: '红牛',
     '68zy_m3u8': '68',
     kdm3u8: '酷点',
@@ -146,8 +309,32 @@ var rule = {
     kbm3u8: '快播',
   }, //线路名替换如:lzm3u8替换为量子资源
   推荐: '.v-list;div.item;*;*;*;*', //这里可以为空，这样点播不会有内容
-  // 一级:'.v-list&&div.item;p&&Text;img&&src;;a&&href', //一级的内容是推荐或者点播时候的一级匹配
-  一级: '.v-list&&div.item;p&&Text;img&&data-src;;a&&href', //一级的内容是推荐或者点播时候的一级匹配
+  //第一个是列表，第二个是标题，第三个是Pic,第四个是描述，第五个是链接，
+
+  一级: '.fed-list-info&&li;.fed-list-title&&Text;.fed-list-pics&&data-original;.fed-list-remarks&&Text;.fed-list-pics&&href',
+  // 一级: `js:
+  // pdfh=jsp.pdfh;
+  // pdfa=jsp.pdfa;
+  // pd=jsp.pd;
+  // var d = [];
+  // var html1=request(input)
+  // var list=pdfa(html1,".fed-list-info&&li")
+  // for(var i=0;i<=list.length;i++){
+  //   var v={}
+  //   v.url=pd(list[i],".fed-list-pics&&href")
+  //   v.title=pdfh(list[i],".fed-part-eone&&Text")
+  //   v.desc=pdfh(list[i],".fed-deta-images&&Text")
+  //   v.content=pdfh(list[i],".fed-part-eone&&Text")
+  //   v.img=pd(list[i],".fed-list-pics.fed-lazy&&data-original")
+  //   d.push(v)
+  //
+  //   // console.log(JSON.stringify(v))
+  // }
+  // setResult(d)
+  //
+  //
+  // `, //一级的内�����是推荐或者点播时候的一级匹配
+  // 一级: '.v-list&&div.item;p&&Text;img&&data-src;;a&&href', //一级的内容是推荐��者点播时候的一级匹配
   // 二级:二级,
   //
   // 或者 {title:'',img:'',desc:'',content:'',tabs:'',lists:'',tab_text:'body&&Text',list_text:'body&&Text',list_url:'a&&href'} 同海阔dr二级
@@ -256,6 +443,6 @@ var rule = {
   // console.log(input)
 
 
-`,
+  `,
   proxy_rule: '',
 }

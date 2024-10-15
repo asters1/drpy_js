@@ -66,6 +66,7 @@ JSON.stringify(rule)
     encoding: rule.encoding,
   }
   fetch_params = JSON.parse(JSON.stringify(rule_fetch_params))
+  // console.log(rule.host(0:-1))
   MY_URL = getHome(rule.host)
 
   // console.log(rule_fetch_params)
@@ -106,6 +107,7 @@ function printDefault(str) {
 }
 
 async function evals(str) {
+  // console.log(str)
   W_File('./debug.js', str)
   var result
   await new Promise((resolve, reject) => {
@@ -129,7 +131,7 @@ function env_to_jscode(obj) {
   for (var i = 0; i < obj_key_list.length; i++) {
     if (typeof obj[obj_key_list[i]] === 'string') {
       str =
-        str + 'var ' + obj_key_list[i] + ' = "' + obj[obj_key_list[i]] + '";\n'
+        str + 'var ' + obj_key_list[i] + ' = `' + obj[obj_key_list[i]] + '`;\n'
     } else if (typeof obj[obj_key_list[i]] === 'object') {
       str =
         str +
@@ -391,6 +393,207 @@ async function request(url, obj, ocr_flag) {
   } else {
     return html
   }
+}
+/**
+ * 一级分类页数据解析
+ * @param cateObj
+ * @returns {string}
+ */
+async function categoryParse(cateObj) {
+  // console.log(rule)
+  fetch_params = JSON.parse(JSON.stringify(rule_fetch_params))
+  let p = cateObj.一级
+  if (!p || typeof p !== 'string') {
+    return '{}'
+  }
+  let d = []
+  // let url = cateObj.url.replaceAll('fyclass', cateObj.tid).replaceAll('fypage', cateObj.pg);
+  let url = cateObj.url.replaceAll('fyclass', cateObj.tid)
+  if (cateObj.pg === 1 && url.includes('[') && url.includes(']')) {
+    url = url.split('[')[1].split(']')[0]
+  } else if (cateObj.pg > 1 && url.includes('[') && url.includes(']')) {
+    url = url.split('[')[0]
+  }
+  if (rule.filter_url) {
+    if (!/fyfilter/.test(url)) {
+      if (!url.endsWith('&') && !rule.filter_url.startsWith('&')) {
+        url += '&'
+      }
+      url += rule.filter_url
+    } else {
+      url = url.replace('fyfilter', rule.filter_url)
+    }
+    // console.log('filter:'+cateObj.filter);
+    let fl = cateObj.filter ? cateObj.extend : {}
+    // 自动合并 不同分类对应的默认筛选
+    if (rule.filter_def && typeof rule.filter_def === 'object') {
+      try {
+        if (
+          Object.keys(rule.filter_def).length > 0 &&
+          rule.filter_def.hasOwnProperty(cateObj.tid)
+        ) {
+          let self_fl_def = rule.filter_def[cateObj.tid]
+          if (self_fl_def && typeof self_fl_def === 'object') {
+            // 引用传递转值传递,避免污染self变量
+            let fl_def = JSON.parse(JSON.stringify(self_fl_def))
+            fl = Object.assign(fl_def, fl)
+          }
+        }
+      } catch (e) {
+        print('合并不同分类对应的默认筛选出错:' + e.message)
+      }
+    }
+    let new_url
+    new_url = cheerio.jinja2(url, { fl: fl })
+    // console.log('jinjia2执行后的new_url类型为:'+typeof(new_url));
+    if (/object Object/.test(new_url)) {
+      new_url = drT.renderText(url, fl)
+    }
+    url = new_url
+  }
+  if (/fypage/.test(url)) {
+    if (url.includes('(') && url.includes(')')) {
+      let url_rep = url.match(/.*?\((.*)\)/)[1]
+      // console.log(url_rep);
+      let cnt_page = url_rep.replaceAll('fypage', cateObj.pg)
+      // console.log(cnt_page);
+      let cnt_pg = eval(cnt_page)
+      // console.log(cnt_pg);
+      url = url
+        .replaceAll(url_rep, cnt_pg)
+        .replaceAll('(', '')
+        .replaceAll(')', '')
+    } else {
+      url = url.replaceAll('fypage', cateObj.pg)
+    }
+  }
+
+  MY_URL = url
+  // setItem('MY_URL',MY_URL);
+  // console.log(MY_URL)
+  p = p.trim()
+  const MY_CATE = cateObj.tid
+  if (p.startsWith('js:')) {
+    var MY_FL = cateObj.extend
+    const TYPE = 'cate'
+    var input = MY_URL
+    const MY_PAGE = cateObj.pg
+    var desc = ''
+    cateObj.input = input
+    var Js_Code = p.trim().replace('js:', '')
+
+    Js_Code =
+      '\n//========================以上是环境变量=============\n' + Js_Code
+    Js_Code = Js_Code.replaceAll('request(', 'await request(')
+    Js_Code = `import "./drpy.js"\n\n` + env_to_jscode(cateObj) + Js_Code
+    Js_Code = Js_Code.replace(
+      SETRESULT_REGEX,
+      ' console.log(JSON.stringify($1($2))) ',
+    )
+    // printGreen(input)
+    // console.log(JSON.stringify(cateObj))
+    var res_cate = await evals(Js_Code)
+    console.log(res_cate)
+    d = VODS
+  } else {
+    p = p.split(';')
+    if (p.length < 5) {
+      return '{}'
+    }
+    let _ps = parseTags.getParse(p[0])
+    _pdfa = _ps.pdfa
+    _pdfh = _ps.pdfh
+    _pd = _ps.pd
+    let is_json = p[0].startsWith('json:')
+    p[0] = p[0].replace(/^(jsp:|json:|jq:)/, '')
+    try {
+      let html = await getHtml(MY_URL)
+      if (html) {
+        if (is_json) {
+          html = dealJson(html)
+        }
+        let list = _pdfa(html, p[0])
+        list.forEach((it) => {
+          let links = p[4].split('+').map((p4) => {
+            return !rule.detailUrl ? _pd(it, p4, MY_URL) : _pdfh(it, p4)
+          })
+          let link = links.join('$')
+          let vod_id = rule.detailUrl ? MY_CATE + '$' + link : link
+
+          let vod_name = _pdfh(it, p[1]).replace(/\n|\t/g, '').trim()
+          let vod_pic = _pd(it, p[2], MY_URL)
+
+          if (rule.二级 === '*') {
+            vod_id = vod_id + '@@' + vod_name + '@@' + vod_pic
+          }
+          d.push({
+            vod_id: vod_id,
+            vod_name: vod_name,
+            vod_pic: vod_pic,
+            vod_remarks: _pdfh(it, p[3]).replace(/\n|\t/g, '').trim(),
+          })
+        })
+      }
+    } catch (e) {
+      console.log(e.message)
+    }
+  }
+  if (rule.图片替换 && rule.图片替换.includes('=>')) {
+    let replace_from = rule.图片替换.split('=>')[0]
+    let replace_to = rule.图片替换.split('=>')[1]
+    d.forEach((it) => {
+      if (it.vod_pic && it.vod_pic.startsWith('http')) {
+        it.vod_pic = it.vod_pic.replace(replace_from, replace_to)
+      }
+    })
+  }
+  if (rule.图片来源) {
+    d.forEach((it) => {
+      if (it.vod_pic && it.vod_pic.startsWith('http')) {
+        it.vod_pic = it.vod_pic + rule.图片来源
+      }
+    })
+  }
+  // print(d);
+  if (d.length > 0) {
+    print(d.slice(0, 2))
+  }
+  let pagecount = 0
+  if (
+    rule.pagecount &&
+    typeof rule.pagecount === 'object' &&
+    rule.pagecount.hasOwnProperty(MY_CATE)
+  ) {
+    print(`MY_CATE:${MY_CATE},pagecount:${JSON.stringify(rule.pagecount)}`)
+    pagecount = parseInt(rule.pagecount[MY_CATE])
+  }
+  let nodata = {
+    list: [
+      {
+        vod_name: '无数据,防无限请求',
+        vod_id: 'no_data',
+        vod_remarks: '不要点,会崩的',
+        vod_pic:
+          'https://ghproxy.net/https://raw.githubusercontent.com/hjdhnx/dr_py/main/404.jpg',
+      },
+    ],
+    total: 1,
+    pagecount: 1,
+    page: 1,
+    limit: 1,
+  }
+  let vod =
+    d.length < 1
+      ? JSON.stringify(nodata)
+      : JSON.stringify({
+          page: parseInt(cateObj.pg),
+          pagecount: pagecount || 999,
+          limit: 20,
+          total: 999,
+          list: d,
+        })
+  // print(vod);
+  return vod
 }
 
 /**
@@ -886,7 +1089,7 @@ async function detailParse(detailObj) {
           let tabName = tab_ext ? _pdfh(html, tab_ext) : tab_name
           // console.log(tabName)
           // console.log('cheerio解析Text');
-          // 此处存在性能问题: pt版2000集需要650毫秒,俊版1300毫秒 特么的优化不动 主要后面定位url的我拿他没法
+          // 此������在性能问题: pt版2000集需要650毫秒,俊版1300毫秒 特么的优化不动 主要后面定位url的我拿他没法
           // 主要性能问题在于 _pd(it, list_url, MY_URL)
           let tt1 = new Date().getTime()
           // vodList.forEach((it,idex)=>{
@@ -1142,7 +1345,7 @@ print = function (data) {
     }
   }
 }
-// log = print
+log = print
 
 // 内置 pdfh,pdfa,pd
 const defaultParser = {
@@ -1769,12 +1972,15 @@ globalThis.urlencode = urlencode
 globalThis.jsp = parseTags.jsp
 globalThis.log = print
 globalThis.print = print
+globalThis.log = log
 globalThis.jq = parseTags.jq
 globalThis.pdfh = undefined
 globalThis.pdfa = undefined
 globalThis.pd = undefined
 globalThis.setResult = setResult
 //解析
+globalThis.categoryParse = categoryParse
+globalThis.JxCategory = categoryParse
 globalThis.searchParse = searchParse
 globalThis.JxSearch = searchParse
 globalThis.detailParse = detailParse
