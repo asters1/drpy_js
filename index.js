@@ -104,9 +104,11 @@ if (cfg.skip_request) {
         cateObj.extend = test_filter.extend
         // console.log(JSON.stringify(cateObj))
         printGreen('================一级=================\n\n')
-        var res = await JxCategory(cateObj)
+        var res_cate = await JxCategory(cateObj)
+        var res_cate_obj = JSON.parse(res_cate)
+
         // process.exit(0)
-        console.log(res)
+        console.log(res_cate_obj)
       }
     } else {
       console.log('class_name和class_url长度不相等，请检查!')
