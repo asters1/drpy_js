@@ -79,12 +79,7 @@ bash init.sh
 
 - HOST -> 就是rule中的host
 - VOD -> 二级的单个数据
-- input -> 请求的完整链接url
-
-- searchObj -> 仅在搜索中可以使用
-- cateObj -> 仅在一级中可以使用
-- detailObj -> 仅在二级中可以使用
-- playObj -> 仅在lazy中可以使用
+- input -> 在一级或者搜索中传的url是什么，就会在二级得到什么。例如，在一级出去了json字符串，在二级就会得到json字符串
 
 ### js中可以使用的函数及定义和用法(可能并未包含完全)
 
