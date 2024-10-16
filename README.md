@@ -165,7 +165,7 @@ pd = jsp.pd
 
 ### 一级和搜索返回值类型一样(json对象)
 
-- 这是setResult之前的结构，用setResult转化一下即可,setResult接��的参数是对象,最终会和tvbox的返回值一样
+- 这是setResult之前的结构，用setResult转化一下即可,setResult接收的参数是对象,最终会和tvbox的返回值一样
 
 ```
 [
