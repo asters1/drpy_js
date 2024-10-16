@@ -1,5 +1,11 @@
 # 本项目衍生于[hjdhnx/dr_py](https://github.com/hjdhnx/dr_py)
 
+## [drpy文档](https://github.com/hjdhnx/dr_py/tree/main/doc)
+
+## [写源教程](https://github.com/hjdhnx/dr_py/blob/main/doc/%E5%86%99%E6%BA%90%E6%95%99%E7%A8%8B.md)
+
+## [js示例](https://github.com/hjdhnx/dr_py/tree/main/js)
+
 ## rule简化版规则
 
 ```javascript
@@ -42,6 +48,22 @@ var rule = {
   二级: ``,
   lazy: ``,
 }
+```
+
+## 如何使用
+
+- 安装依赖
+
+```
+bash init.sh
+```
+
+- 修改config.js中的测试文件路径
+
+```javascript
+  //测试的js文件路径
+  // test_file: './zj5.js',
+  test_file: './base.js',
 ```
 
 ### js中可以使用的变量(可能并未包含完全)
@@ -132,8 +154,4 @@ function setResult(d) {
 pdfa = jsp.pdfa
 pdfh = jsp.pdfh
 pd = jsp.pd
-```
-
-```javascript
-
 ```
