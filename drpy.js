@@ -500,7 +500,7 @@ async function categoryParse(cateObj) {
       VODS = JSON.parse(res_cate)
     } catch {
       console.log(res_cate)
-      console.log('字符串转json出错!')
+      console.log('转化出错!')
       process.exit(1)
     }
     d = VODS
@@ -895,7 +895,13 @@ async function detailParse(detailObj) {
     }
     // eval(p.trim().replace('js:', ''))
     // console.log(res_detail)
-    var res = JSON.parse(res_detail)
+    try {
+      var res = JSON.parse(res_detail)
+    } catch {
+      console.log(res_detail)
+      console.log('转化出错!')
+      process.exit(1)
+    }
     VOD = res
     vod = VOD
     // console.log(JSON.stringify(vod))
