@@ -6,6 +6,14 @@
 
 ## [js示例](https://github.com/hjdhnx/dr_py/tree/main/js)
 
+## 支持的软件
+
+#### [tvbox](https://github.com/o0HalfLife0o/TVBoxOSC)
+
+#### [zyplayer](https://github.com/Hiram-Wong/ZyPlayer)
+
+#### EasyBox
+
 ## rule简化版规则
 
 ```javascript
