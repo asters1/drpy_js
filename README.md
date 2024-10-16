@@ -79,7 +79,7 @@ bash init.sh
 
 - HOST -> 就是rule中的host
 - VOD -> 二级的单个数据
-- input -> 在一级或者搜索中传的url是什么，就会在二级得到什么。例如，在一级出去了json字符串，在二级就会得到json字符串
+- input -> 在一级或者搜索中传的url是什么，就会在二级得到什么。例如，在一级传出去了json字符串，在二级就会得到json字符串
 
 ### js中可以使用的函数及定义和用法(可能并未包含完全)
 
@@ -165,7 +165,7 @@ pd = jsp.pd
 
 ### 一级和搜索返回值类型一样(json对象)
 
-- 这是setResult之前的结构，用setResult转化一下即可,setResult接受的参数是对象,最终会和tvbox的返回值一样
+- 这是setResult之前的结构，用setResult转化一下即可,setResult接��的参数是对象,最终会和tvbox的返回值一样
 
 ```
 [
