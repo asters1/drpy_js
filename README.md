@@ -1,6 +1,6 @@
 # 本项目衍生于[hjdhnx/dr_py](https://github.com/hjdhnx/dr_py)
 
-# rule简化版规则
+## rule简化版规则
 
 ```javascript
 var rule = {
