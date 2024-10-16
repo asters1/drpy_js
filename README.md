@@ -69,6 +69,7 @@ bash init.sh
 ### js中可以使用的变量(可能并未包含完全)
 
 - HOST -> 就是rule中的host
+- VOD -> 二级的单个数据
 - input -> 请求的完整链接url
 
 - searchObj -> 仅在搜索中可以使用
@@ -158,9 +159,9 @@ pd = jsp.pd
 
 ## 写js时的返回值
 
-### 一级和搜索返回值类型一样
+### 一级和搜索返回值类型一样(json对象)
 
-- 这是setResult之前的结构，用setResult转化一下即可,setResult接受的参数是对象
+- 这是setResult之前的结构，用setResult转化一下即可,setResult接受的参数是对象,最终会和tvbox的返回值一样
 
 ```
 [
@@ -187,7 +188,9 @@ pd = jsp.pd
 
 - 如果使用规则来写的话。遵循第一个是列表，第二个是标题，第三个是Pic,第四个是描述，第五个是链接的选择
 
-### 二级返回值
+### 二级返回值(json字符串)
+
+- 返回值json字符串需要储存在VOD中
 
 ```json
 {
@@ -195,6 +198,8 @@ pd = jsp.pd
   "vod_name": "你的万水千山",
   //封面
   "vod_pic": "https://pic.youkupic.com/upload/vod/20241014-1/b9404fee07b46f809760fb61ccfb6953.jpg",
+  //提示信息
+  "vod_remarks": "HD",
   //类型
   "type_name": "剧情",
   //主演
@@ -203,8 +208,6 @@ pd = jsp.pd
   "vod_area": "中国大陆",
   //年份
   "vod_year": "2024",
-  //提示信息
-  "vod_remarks": "HD",
   //导演
   "vod_director": "杨玉川",
   //简介
@@ -213,5 +216,27 @@ pd = jsp.pd
   "vod_play_from": "追剧①$$$追剧③",
   // 播放列表 注意分隔符 分别是 多个源$$$分隔，源中的剧集用#分隔，剧集的名称和地址用$分隔
   "vod_play_url": "HD$https://zhuiju4.cc/vplay/87249-1-1$$$HD$https://zhuiju4.cc/vplay/87249-2-1"
+}
+```
+
+### lazy返回值(可以是url字符串,也可以是json对象，但是需要储存在input中)
+
+```javascript
+//这是drpy定义的返回,所以需要储存在input中
+var lazy_play =
+  typeof input === 'object'
+    ? input
+    : {
+        parse: 1,
+        jx: tellIsJx(input),
+        url: input,
+      }
+```
+
+```json
+{
+  "parse": 0,
+  "url": "https://v5.tlkqc.com/wjv5/202410/14/bcBQQXEsj677/video/index.m3u8",
+  "jx": 0
 }
 ```

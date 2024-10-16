@@ -883,7 +883,7 @@ async function detailParse(detailObj) {
     Js_Code = Js_Code + '\n\nconsole.log(JSON.stringify(VOD));'
     try {
       var res_detail = await evals(Js_Code)
-      console.log(res_detail)
+      // console.log(res_detail)
     } catch (e) {
       console.log('jscode运行出错!')
     }
@@ -1174,6 +1174,7 @@ async function playParse(playObj) {
         `import "./drpy.js"\n` + env_to_jscode(playObj) + '\n' + lazy_code
       lazy_code = lazy_code + '\nconsole.log(JSON.stringify(input))'
       var res_play = await evals(lazy_code)
+      console.log(res_play)
       try {
         input = JSON.parse(res_play)
       } catch {
@@ -1215,7 +1216,7 @@ async function playParse(playObj) {
       }
     }
   } else if (rule.play_json && !Array.isArray(rule.play_json)) {
-    // 其他情��� 非[] 判断true/false
+    // 其他情���� 非[] 判断true/false
     let base_json = {
       jx: 1,
       parse: 1,
@@ -1837,7 +1838,7 @@ const parseTags = {
         sp.splice(sp.length - 1)
         if (sp.length > 1) {
           for (let i in sp) {
-            //Javascript自定义Array.prototype干扰for-in循环
+            //Javascript自定义Array.prototype干��for-in循环
             if (sp.hasOwnProperty(i)) {
               if (!SELECT_REGEX.test(sp[i])) {
                 sp[i] = sp[i] + ':eq(0)'
