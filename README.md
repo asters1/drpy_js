@@ -233,6 +233,8 @@ var lazy_play =
       }
 ```
 
+- lazy的返回,储存在input中
+
 ```json
 {
   "parse": 0,
