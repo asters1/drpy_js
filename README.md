@@ -8,11 +8,11 @@
 
 ## 支持的软件
 
-#### [tvbox](https://github.com/o0HalfLife0o/TVBoxOSC)
+#### [tvbox -电视版](https://github.com/o0HalfLife0o/TVBoxOSC)
 
-#### [zyplayer](https://github.com/Hiram-Wong/ZyPlayer)
+#### [zyplayer -PC版(多平台windown,linux)](https://github.com/Hiram-Wong/ZyPlayer)
 
-#### EasyBox
+#### EasyBox -手机版，可以下载视频
 
 ## rule简化版规则
 
