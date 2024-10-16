@@ -84,6 +84,7 @@ console.log(res)
 
 ```javascript
 function setResult(d) {
+  //接受一个数组，返回转化后的数组,搜索和一级需要
   //其中d是一个数组，如果不是数组，会返回一个空数组
   //-----------举例-------------
   //import './drpy.js'
@@ -100,6 +101,7 @@ function setResult(d) {
   // }]
   //var res = setResult(a)
   // console.log(JSON.stringify(res))
+  //------------------------
   //会打印这个-->[{
   //"vod_id":"链接1",
   // "vod_name":"标题1",
@@ -117,8 +119,19 @@ function setResult(d) {
 }
 ```
 
-```javascript
+#### pdfh,pdfa,pd的用法
 
+- pdfa(html, parse) 返回的是列表!
+- 其中parse是规则,例如.fed-part-layout&&dl,规则只可意会不可言传
+- pdfh(html, parse, base_url) 返回的是字符串!
+- pd(html, parse) pdfh的升级版用于获取url链接!
+
+- 注意事项:写的时候需要用jsp才能访问到pdfa,pdfh,pd
+
+```javascript
+pdfa = jsp.pdfa
+pdfh = jsp.pdfh
+pd = jsp.pd
 ```
 
 ```javascript
