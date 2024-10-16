@@ -317,6 +317,7 @@ var rule = {
     }
     // console.log(play_urls)
     VOD.vod_play_url=play_urls.join("$$$")
+    
   } catch (e) {
     log('获取二级详情页发生错误:' + e.message)
   }

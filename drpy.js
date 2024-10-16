@@ -883,7 +883,7 @@ async function detailParse(detailObj) {
     Js_Code = Js_Code + '\n\nconsole.log(JSON.stringify(VOD));'
     try {
       var res_detail = await evals(Js_Code)
-      // console.log(res_detail)
+      console.log(res_detail)
     } catch (e) {
       console.log('jscode运行出错!')
     }
