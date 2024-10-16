@@ -49,9 +49,15 @@ var rule = {
 - HOST -> 就是rule中的host
 - input -> 请求的完整链接url
 
+- searchObj -> 仅在搜索中可以使用
+- cateObj -> 仅在一级中可以使用
+- detailObj -> 仅在二级中可以使用
+- playObj -> 仅在lazy中可以使用
+
 ### js中可以使用的函数及定义和用法(可能并未包含完全)
 
-- request请求及用法
+#### request请求及用法
+
 - 注意事项:request请求,单独在js文件中请求需要加await,如果是在rule中使用则不可以加await!!!
 
 ```javascript
@@ -72,4 +78,30 @@ var url = `http://httpbin.org/post`
 var obj = { headers: { ua: 'kk' }, method: 'post', data: { A: 'A', B: 'B' } }
 var res = await request(url, obj)
 console.log(res)
+```
+
+#### setResult用法
+
+```javascript
+function setResult(d) {
+  //其中d是一个数组，如果不是数组，会返回一个空数组
+  //-----------举例-------------
+  //import './drpy.js'
+  //var a = [
+  //  { img: '封面1', desc: '描述1', title: '标题1', url: '链接1' },
+  //  { img: '封面2', desc: '描述2', title: '标题2', url: '链接2' },
+  //]
+  //var res = setResult(a)
+  // console.log(JSON.stringify(res))
+  //会打印这个-->[{"vod_id":"链接1","vod_name":"标题1","vod_remarks":"描述1","vod_content":"","vod_pic":"封面1"},{"vod_id":"链接2","vod_name":"标题2","vod_remarks":"描述2","vod_content":"","vod_pic":"封面2"}]
+  //------------------------
+}
+```
+
+```javascript
+
+```
+
+```javascript
+
 ```
