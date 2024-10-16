@@ -493,7 +493,7 @@ async function categoryParse(cateObj) {
     // printGreen(input)
     // console.log(JSON.stringify(cateObj))
     var res_cate = await evals(Js_Code)
-    // console.log(res_cate)
+    console.log(res_cate)
     // VO
 
     VODS = JSON.parse(res_cate)
@@ -1215,7 +1215,7 @@ async function playParse(playObj) {
       }
     }
   } else if (rule.play_json && !Array.isArray(rule.play_json)) {
-    // 其他情�� 非[] 判断true/false
+    // 其他情��� 非[] 判断true/false
     let base_json = {
       jx: 1,
       parse: 1,

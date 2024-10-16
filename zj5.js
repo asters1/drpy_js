@@ -234,30 +234,31 @@ var rule = {
   // 推荐: '.v-list;div.item;*;*;*;*', //这里可以为空，这样点播不会有内容
   //第一个是列表，第二个是标题，第三个是Pic,第四个是描述，第五个是链接，
 
-  一级: '.fed-list-info&&li;.fed-list-title&&Text;.fed-list-pics&&data-original;.fed-list-remarks&&Text;.fed-list-pics&&href',
-  //   一级: `js:
-  //
-  // pdfh = jsp.pdfh
-  // pdfa = jsp.pdfa
-  // pd = jq.pd
-  // var d = []
-  // var html1 =  request(input)
-  // var list = pdfa(html1, '.fed-list-info&&li')
-  // for (var i = 0; i <= list.length - 1; i++) {
-  //   var v = {}
-  //   一级: '.fed-list-info&&li;.fed-list-title&&Text;.fed-list-pics&&data-original;.fed-list-remarks&&Text;.fed-list-pics&&href',
-  //   v.url = pd(list[i], '.fed-list-pics&&href')
-  //   v.title=pdfh(list[i],".fed-list-title&&Text")
-  //   v.desc=pdfh(list[i],".fed-list-remarks&&Text")
-  //   v.img=pd(list[i],".fed-list-pics.fed-lazy&&data-original")
-  //   d.push(v)
-  //
-  //   // console.log(JSON.stringify(v))
-  // }
-  //   setResult(d)
-  //
-  //
-  //   `, //一级的内�����是推荐或者点播时候的一级匹配
+  // 一级: '.fed-list-info&&li;.fed-list-title&&Text;.fed-list-pics&&data-original;.fed-list-remarks&&Text;.fed-list-pics&&href',
+  一级: `js:
+
+  pdfh = jsp.pdfh
+  pdfa = jsp.pdfa
+  pd = jq.pd
+  var d = []
+  var html1 =  request(input)
+  var list = pdfa(html1, '.fed-list-info&&li')
+  for (var i = 0; i <= list.length - 1; i++) {
+    var v = {}
+    一级: '.fed-list-info&&li;.fed-list-title&&Text;.fed-list-pics&&data-original;.fed-list-remarks&&Text;.fed-list-pics&&href',
+    v.url = pd(list[i], '.fed-list-pics&&href')
+    v.title=pdfh(list[i],".fed-list-title&&Text")
+    v.desc=pdfh(list[i],".fed-list-remarks&&Text")
+    v.img=pd(list[i],".fed-list-pics.fed-lazy&&data-original")
+    d.push(v)
+
+    // console.log(JSON.stringify(v))
+  }
+  // console.log(d)
+    setResult(d)
+
+
+    `, //一级的内�����是推荐或者点播时候的一级匹配
   // 一级: '.v-list&&div.item;p&&Text;img&&data-src;;a&&href', //一级的内容是推荐��者点播时候的一级匹配
   // 二级:二级,
   //
