@@ -227,6 +227,8 @@ var rule = {
   tab_rename: {}, //线路名替换如:lzm3u8替换为量子资源
   //第一个是列表，第二个是标题，第三个是Pic,第四个是描述，第五个是链接，
   // 一级: '.fed-list-info&&li;.fed-list-title&&Text;.fed-list-pics&&data-original;.fed-list-remarks&&Text;.fed-list-pics&&href',
+
+  搜索: '.fed-part-layout&&dl;.fed-part-eone&&Text;.fed-list-pics.fed-lazy&&data-original;.fed-deta-images&&Text;.fed-rims-info&&href', //第一个是列表，第二个是标题，第三个是Pic,第四个是描述，第五个是链接，
   一级: `js:
 
 pdfh = jsp.pdfh
@@ -295,5 +297,24 @@ for (var i = 0; i <= list.length - 1; i++) {
   } catch (e) {
     log('获取二级详情页发生错误:' + e.message)
   }
+  `,
+  lazy: `js:
+  var play_u=""
+  var html1=request(input)
+  // console.log(html1)
+  var play_regex = /player_aaaa=(.*?)</
+  var m = html1.match(play_regex)
+  if (m) {
+    var player_aaaa = JSON.parse(m[1])
+    play_u=player_aaaa.url
+  }
+  input={
+    parse:0,
+    url:play_u,
+    jx:0
+  }
+  // console.log(input)
+
+
   `,
 }
