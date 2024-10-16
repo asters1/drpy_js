@@ -493,10 +493,16 @@ async function categoryParse(cateObj) {
     // printGreen(input)
     // console.log(JSON.stringify(cateObj))
     var res_cate = await evals(Js_Code)
-    console.log(res_cate)
+    // console.log(res_cate)
     // VO
 
-    VODS = JSON.parse(res_cate)
+    try {
+      VODS = JSON.parse(res_cate)
+    } catch {
+      console.log(res_cate)
+      console.log('字符串转json出错!')
+      process.exit(1)
+    }
     d = VODS
   } else {
     p = p.split(';')

@@ -245,7 +245,6 @@ var rule = {
   var list = pdfa(html1, '.fed-list-info&&li')
   for (var i = 0; i <= list.length - 1; i++) {
     var v = {}
-    一级: '.fed-list-info&&li;.fed-list-title&&Text;.fed-list-pics&&data-original;.fed-list-remarks&&Text;.fed-list-pics&&href',
     v.url = pd(list[i], '.fed-list-pics&&href')
     v.title=pdfh(list[i],".fed-list-title&&Text")
     v.desc=pdfh(list[i],".fed-list-remarks&&Text")

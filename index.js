@@ -145,6 +145,9 @@ if (cfg.skip_request) {
     }
   }
 }
+if (vod['vod_id'] == 'no_data') {
+  process.exit(1)
+}
 printGreen(
   '\r\n你测试的视频是:' + vod['vod_name'] + '[' + vod['vod_id'] + ']\n',
 )
