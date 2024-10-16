@@ -93,7 +93,17 @@ function setResult(d) {
   //]
   //var res = setResult(a)
   // console.log(JSON.stringify(res))
-  //会打印这个-->[{"vod_id":"链接1","vod_name":"标题1","vod_remarks":"描述1","vod_content":"","vod_pic":"封面1"},{"vod_id":"链接2","vod_name":"标题2","vod_remarks":"描述2","vod_content":"","vod_pic":"封面2"}]
+  //会打印这个-->[
+  // {"vod_id":"链接1",
+  // "vod_name":"标题1",
+  // "vod_remarks":"描述1",
+  // "vod_content":"",
+  // "vod_pic":"封面1"
+  // },{"vod_id":"链接2",
+  // "vod_name":"标题2",
+  // "vod_remarks":"描述2",
+  // "vod_content":"",
+  // "vod_pic":"封面2"}]
   //------------------------
 }
 ```
