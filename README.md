@@ -158,10 +158,12 @@ pd = jsp.pd
 
 ## 写js时的返回值
 
-### 一级和搜索一样,这是setResult之前的结构，用setResult转化一下即可,setResult接受的是对象
+### 一级和搜索返回值类型一样
 
-```javascript
-;[
+- 这是setResult之前的结构，用setResult转化一下即可,setResult接受的参数是对象
+
+```
+[
   {
     url: 'https://zhuiju4.cc/wushan/87249',
     title: '你的万水千山',
