@@ -43,3 +43,33 @@ var rule = {
   lazy: ``,
 }
 ```
+
+### js中可以使用的变量(可能并未包含完全)
+
+- HOST -> 就是rule中的host
+- input -> 请求的完整链接url
+
+### js中可以使用的函数及定义和用法(可能并未包含完全)
+
+- request请求及用法
+- 注意事项:request请求,单独在js文件中请求需要加await,如果是在rule中使用则不可以加await!!!
+
+```javascript
+function request(url, obj, ocr_flag) {
+  //url->请求链接
+  // var obj = { headers: { ua: 'kk' }, method: 'post', data: { A: 'A', B: 'B' } }这是postjson请求的obj
+  //ocr_flag不知道，可以不填
+  // 例如request("http://httpbin.org/get")
+  //返回的是请求到的body字符串
+}
+```
+
+- 这是个request请求示例
+
+```javascript
+import './drpy.js'
+var url = `http://httpbin.org/post`
+var obj = { headers: { ua: 'kk' }, method: 'post', data: { A: 'A', B: 'B' } }
+var res = await request(url, obj)
+console.log(res)
+```
