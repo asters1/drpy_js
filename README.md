@@ -87,23 +87,32 @@ function setResult(d) {
   //其中d是一个数组，如果不是数组，会返回一个空数组
   //-----------举例-------------
   //import './drpy.js'
-  //var a = [
-  //  { img: '封面1', desc: '描述1', title: '标题1', url: '链接1' },
-  //  { img: '封面2', desc: '描述2', title: '标题2', url: '链接2' },
-  //]
+  //var a = [{
+  // img: '封面1',
+  // desc: '描述1',
+  // title: '标题1',
+  // url: '链接1'
+  // },{
+  // img: '封面2',
+  // desc: '描述2',
+  // title: '标题2',
+  // url: '链接2'
+  // }]
   //var res = setResult(a)
   // console.log(JSON.stringify(res))
-  //会打印这个-->[
-  // {"vod_id":"链接1",
+  //会打印这个-->[{
+  //"vod_id":"链接1",
   // "vod_name":"标题1",
   // "vod_remarks":"描述1",
   // "vod_content":"",
   // "vod_pic":"封面1"
-  // },{"vod_id":"链接2",
+  // },{
+  //"vod_id":"链接2",
   // "vod_name":"标题2",
   // "vod_remarks":"描述2",
   // "vod_content":"",
-  // "vod_pic":"封面2"}]
+  // "vod_pic":"封面2"
+  // }]
   //------------------------
 }
 ```
