@@ -1,17 +1,13 @@
 var rule = {
   title: `追剧5网`,
-  // host:'https://v.ikanbot.com',
   host: 'https://zhuiju4.cc',
   url: '/show/fyclassfyfilter',
   headers: { 'User-Agent': 'IOS_UA', Referer: 'https://zhuiju4.cc' },
   class_name: '电影&电视剧&动漫',
   class_url: 'dianying&dianshiju&dongman',
-  //https://www.ikanbot.com/search?q=%E6%96%97%E7%BD%97%E5%A4%A7&p=2
-  // searchUrl:'/search?q=**&p=fypage',
   searchUrl: '/search/**----------fypage---/',
   searchable: 2,
   filter_url: '-{{fl.area}}-{{fl.by}}--{{fl.lang}}-------{{fl.year}}/',
-  // '{{fl.cateId}}-{{fl.area}}-{{fl.by or "time"}}-{{fl.class}}-{{fl.lang}}-{{fl.letter}}---fypage---{{fl.year}}',
   filter: {
     dianying: [
       {
@@ -222,8 +218,6 @@ var rule = {
     ],
   },
   图片来源: '',
-  // '@Referer=https://v.ikanbot.com/@User-Agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/118.0.0.0 Safari/537.36',
-  //图片替换: "//=>http://",
   filter_def: '',
   filter获取方法: '',
   play_parse: true,
@@ -231,47 +225,29 @@ var rule = {
   tab_remove: [], //移除某个线路及相关的选集
   tab_order: [], //线路顺序,按里面的顺序优先，没写的依次排后面
   tab_rename: {}, //线路名替换如:lzm3u8替换为量子资源
-  // 推荐: '.v-list;div.item;*;*;*;*', //这里可以为空，这样点播不会有内容
   //第一个是列表，第二个是标题，第三个是Pic,第四个是描述，第五个是链接，
+  // 一级: '.fed-list-info&&li;.fed-list-title&&Text;.fed-list-pics&&data-original;.fed-list-remarks&&Text;.fed-list-pics&&href',
+  一级: `js:
 
+pdfh = jsp.pdfh
+pdfa = jsp.pdfa
+pd = jq.pd
+var d = []
+var html1 =  request(input)
+var list = pdfa(html1, '.fed-list-info&&li')
+for (var i = 0; i <= list.length - 1; i++) {
+  var v = {}
   一级: '.fed-list-info&&li;.fed-list-title&&Text;.fed-list-pics&&data-original;.fed-list-remarks&&Text;.fed-list-pics&&href',
-  //   一级: `js:
-  //
-  // pdfh = jsp.pdfh
-  // pdfa = jsp.pdfa
-  // pd = jq.pd
-  // var d = []
-  // var html1 =  request(input)
-  // var list = pdfa(html1, '.fed-list-info&&li')
-  // for (var i = 0; i <= list.length - 1; i++) {
-  //   var v = {}
-  //   一级: '.fed-list-info&&li;.fed-list-title&&Text;.fed-list-pics&&data-original;.fed-list-remarks&&Text;.fed-list-pics&&href',
-  //   v.url = pd(list[i], '.fed-list-pics&&href')
-  //   v.title=pdfh(list[i],".fed-list-title&&Text")
-  //   v.desc=pdfh(list[i],".fed-list-remarks&&Text")
-  //   v.img=pd(list[i],".fed-list-pics.fed-lazy&&data-original")
-  //   d.push(v)
-  //
-  //   // console.log(JSON.stringify(v))
-  // }
-  //   setResult(d)
-  //
-  //
-  //   `, //一级的内�����是推荐或者点播时候的一级匹配
-  // 一级: '.v-list&&div.item;p&&Text;img&&data-src;;a&&href', //一级的内容是推荐��者点播时候的一级匹配
-  // 二级:二级,
-  //
-  // 或者 {title:'',img:'',desc:'',content:'',tabs:'',lists:'',tab_text:'body&&Text',list_text:'body&&Text',list_url:'a&&href'} 同海阔dr二级
+  v.url = pd(list[i], '.fed-list-pics&&href')
+  v.title=pdfh(list[i],".fed-list-title&&Text")
+  v.desc=pdfh(list[i],".fed-list-remarks&&Text")
+  v.img=pd(list[i],".fed-list-pics.fed-lazy&&data-original")
+  d.push(v)
 
-  // 二级: {
-  //   title: '.fed-deta-content&&h3&&Text',
-  //   img: '.fed-list-pics&&data-original',
-  //   desc: '.fed-list-remarks&&Text',
-  //   content: '.fed-conv-text.fed-padding.fed-text-muted&&Text',
-  //   tabs: '.fed-tabs-boxs&&.fed-tabs-foot&&li',
-  //   lists: '.fed-tabs-btm.fed-padding&&li',
-  //   list_text: 'a&&Text',
-  // },
+  // console.log(JSON.stringify(v))
+}
+  setResult(d)
+  `,
   二级: `js:
   // console.log(input)
   //
@@ -320,53 +296,4 @@ var rule = {
     log('获取二级详情页发生错误:' + e.message)
   }
   `,
-  // 搜索: '.fed-part-layout&&dl;.fed-part-eone&&Text;.fed-list-pics.fed-lazy&&data-original;.fed-deta-images&&Text;.fed-rims-info&&href', //第一个是列表，第二个是标题，第三个是Pic,第四个是描述，第五个是链接，
-
-  // 搜索: `js:
-  // // console.log("aaaa")
-  // pdfh=jsp.pdfh;
-  // pdfa=jsp.pdfa;
-  // pd=jsp.pd;
-  // var d = [];
-  // var html = request(input);
-  //
-  // var list=pdfa(html,".fed-part-layout&&dl")
-  // for(var i=0;i<=list.length-1;i++){
-  //   var v={}
-  //   v.url=pd(list[i],".fed-rims-info&&href")
-  //   v.title=pdfh(list[i],".fed-part-eone&&Text")
-  //   v.desc=pdfh(list[i],".fed-deta-images&&Text")
-  //   v.content=pdfh(list[i],".fed-part-eone&&Text")
-  //   v.img=pd(list[i],".fed-list-pics.fed-lazy&&data-original")
-  //   d.push(v)
-  //
-  //   // console.log(JSON.stringify(v))
-  // }
-  // setResult(d)
-  //
-  //
-  //
-  //
-  //
-  // `, //第一个是列表，第二个是标题，第三个是Pic,第四个是描述，第五个是链接，
-  lazy: `js:
-  var play_u=""
-  var html1=request(input)
-  // console.log(html1)
-  var play_regex = /player_aaaa=(.*?)</
-  var m = html1.match(play_regex)
-  if (m) {
-    var player_aaaa = JSON.parse(m[1])
-    play_u=player_aaaa.url
-  }
-  input={
-    parse:0,
-    url:play_u,
-    jx:0
-  }
-  // console.log(input)
-
-
-  `,
-  proxy_rule: '',
 }

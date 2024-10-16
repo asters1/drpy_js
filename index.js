@@ -55,7 +55,12 @@ if (cfg.skip_request) {
           test_class.class_name = class_name_list[i]
           test_class.class_url = class_url_list[i]
         }
-        let filter_tag = filter[class_url_list[i]]
+        let filter_tag
+        try {
+          filter_tag = filter[class_url_list[i]]
+        } catch {
+          filter_tag = undefined
+        }
         if (filter_tag == undefined) {
           console.log('筛选未定义')
         } else {
@@ -95,37 +100,43 @@ if (cfg.skip_request) {
         test_filter.extend[test_filter.key] = test_filter.value.v
 
         // {\"url\":\"https://zhuiju4.cc/vodshow/fyclassfyfilter.html\",\"一级\":\"js:/nrequest(/\"http://localhost:8080/one_/\"+JSON.stringify(cateObj))/nrequest(/\"http://localhost:8080/input=/\"+input)/n/n  \",\"tid\":\"movie\",\"pg\":1,\"filter\":true,\"extend\":{}}
-        var cateObj = {}
-        cateObj.url = rule.host + rule.url
-        cateObj.一级 = rule.一级
-        cateObj.tid = test_class.class_url
-        cateObj.pg = cfg.test_page
-        cateObj.filter = true
-        cateObj.extend = test_filter.extend
-        // console.log(JSON.stringify(cateObj))
-        printGreen('================一级=================\n\n')
-        var res_cate = await JxCategory(cateObj)
-        var res_cate_obj = JSON.parse(res_cate)
-
-        // process.exit(0)
-        console.log(res_cate_obj)
-        let vod_list = res_cate_obj.list
-        for (let i = 0; i < vod_list.length; i++) {
-          let V = vod_list[i]
-          printGreen('序号:  ' + i + '\n')
-          // printGrey('序号==>' + i)
-          printGreen('名称:  ' + V['vod_name'] + '\n')
-          printGreen(' ID :  ' + V['vod_id'] + '\n')
-          printGrey('封面:  ' + V['vod_pic'] + '\n')
-          printGrey('描述:  ' + V['vod_remarks'] + '\n')
-          if (i == cfg.test_vod_index) {
-            vod = V
-          }
-        }
       }
     } else {
       console.log('class_name和class_url长度不相等，请检查!')
     }
+  }
+}
+printGreen('================一级=================\n\n')
+
+var cateObj = {}
+cateObj.url = rule.host + rule.url
+cateObj.一级 = rule.一级
+cateObj.tid = test_class.class_url
+cateObj.pg = cfg.test_page
+cateObj.filter = true
+cateObj.extend = test_filter.extend
+// console.log(JSON.stringify(cateObj))
+var res_cate = await JxCategory(cateObj)
+var res_cate_obj = JSON.parse(res_cate)
+
+// process.exit(0)
+// console.log(res_cate_obj)
+let vod_list = res_cate_obj.list
+if (res_cate_obj.list == undefined) {
+  console.log('获取一级列表失败!!')
+  console.log(res_cate)
+  process.exit(1)
+}
+for (let i = 0; i < vod_list.length; i++) {
+  let V = vod_list[i]
+  printGreen('序号:  ' + i + '\n')
+  // printGrey('序号==>' + i)
+  printGreen('名称:  ' + V['vod_name'] + '\n')
+  printGreen(' ID :  ' + V['vod_id'] + '\n')
+  printGrey('封面:  ' + V['vod_pic'] + '\n')
+  printGrey('描述:  ' + V['vod_remarks'] + '\n')
+  if (i == cfg.test_vod_index) {
+    vod = V
   }
 }
 printGreen(
@@ -138,7 +149,22 @@ rule.input = vod['vod_id']
 rule.tab_exclude = '猜你|喜欢|下载|剧情|热播'
 
 // process.exit(0)
-var res_detail = JSON.parse(await JxDetail(rule))
+var res_detail_str = await JxDetail(rule)
+try {
+  var res_detail = JSON.parse(res_detail_str)
+} catch {
+  console.log('解析二级失败!!\n')
+  console.log(res_detail_str)
+  process.exit(1)
+}
+if (
+  res_detail.vod_play_from == undefined ||
+  res_detail.vod_play_url == undefined
+) {
+  console.log('vod_play_from或者vod_play_url未定义!!\n')
+  console.log(res_detail_str)
+  process.exit(1)
+}
 
 printGrey('\n//视频ID(vod_id)\n')
 printGreen(res_detail.vod_id + '\n')
@@ -186,4 +212,12 @@ printGreen('\r\n测试的播放flag是:' + test_play_flag + '\n')
 printGreen('\n\n================lazy=================\n\n')
 var playObj = { url: test_play_url, flag: test_play_flag, flags: [] }
 playObj.input = test_play_url
-JxPlay(playObj)
+var res_play_str = await JxPlay(playObj)
+
+try {
+  var res_play = JSON.parse(res_play_str)
+} catch {
+  console.log('解析lazy失败!!\n')
+  console.log(res_detail_str)
+  process.exit(1)
+}

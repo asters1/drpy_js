@@ -1,6 +1,7 @@
 var cfg = {
   //测试的js文件路径
-  test_file: './zj5.js',
+  // test_file: './zj5.js',
+  test_file: './base.js',
   //打印开关
   print_switch: false,
   // print_switch: true,

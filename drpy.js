@@ -888,7 +888,7 @@ async function detailParse(detailObj) {
       console.log('jscode运行出错!')
     }
     // eval(p.trim().replace('js:', ''))
-    console.log(res_detail)
+    // console.log(res_detail)
     var res = JSON.parse(res_detail)
     VOD = res
     vod = VOD
@@ -1229,7 +1229,7 @@ async function playParse(playObj) {
     }
     lazy_play = Object.assign(lazy_play, base_json)
   }
-  console.log(JSON.stringify(lazy_play))
+  // console.log(JSON.stringify(lazy_play))
   return JSON.stringify(lazy_play)
 }
 
