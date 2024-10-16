@@ -10,7 +10,7 @@
 
 #### [tvbox -电视版](https://github.com/o0HalfLife0o/TVBoxOSC)
 
-#### [zyplayer -PC版(多平台windown,linux)](https://github.com/Hiram-Wong/ZyPlayer)
+#### [zyplayer -PC版(多平台windowns,linux)](https://github.com/Hiram-Wong/ZyPlayer)
 
 #### EasyBox -手机版，可以下载视频
 
