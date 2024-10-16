@@ -158,25 +158,27 @@ pd = jsp.pd
 
 ## 写js时的返回值
 
-### 一级和搜索一样,这是setResult之前的结构，用setResult转化一下即可
+### 一级和搜索一样,这是setResult之前的结构，用setResult转化一下即可,setResult接受的是对象
 
-```json
-[{
-    "url": "https://zhuiju4.cc/wushan/87249",
-    "title": "你的万水千山",
-    "desc": "HD",
-    "img": "https://pic.youkupic.com/upload/vod/20241014-1/b9404fee07b46f809760fb61ccfb6953.jpg"
+```javascript
+;[
+  {
+    url: 'https://zhuiju4.cc/wushan/87249',
+    title: '你的万水千山',
+    desc: 'HD',
+    img: 'https://pic.youkupic.com/upload/vod/20241014-1/b9404fee07b46f809760fb61ccfb6953.jpg',
   },
   {
-    "url": "https://zhuiju4.cc/wushan/87248",
-    "title: "峡谷情缘",
-    "desc": "HD",
-    "img": "https://pic.youkupic.com/upload/vod/20241014-1/b306a4c22f86d905c3e833d080d9aee9.jpg"
+    url: 'https://zhuiju4.cc/wushan/87248',
+    title: '峡谷情缘',
+    desc: 'HD',
+    img: 'https://pic.youkupic.com/upload/vod/20241014-1/b306a4c22f86d905c3e833d080d9aee9.jpg',
   },
   {
-    "url": "https://zhuiju4.cc/wushan/87247",
-    "title": "我，何爷爷",
-    "desc": "HD",
-    "img": "https://pic.youkupic.com/upload/vod/20241014-1/4f35109981920daacca7657d45476865.jpg"
-  }]
+    url: 'https://zhuiju4.cc/wushan/87247',
+    title: '我，何爷爷',
+    desc: 'HD',
+    img: 'https://pic.youkupic.com/upload/vod/20241014-1/4f35109981920daacca7657d45476865.jpg',
+  },
+]
 ```
