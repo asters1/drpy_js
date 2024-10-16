@@ -320,7 +320,7 @@ var rule = {
     log('获取二级详情页发生错误:' + e.message)
   }
   `,
-  // 搜索: '.fed-part-layout&&dl;.fed-part-eone&&Text;.fed-list-pics.fed-lazy&&data-original;.fed-deta-images&&Text;.fed-rims-info&&href', //第一个是列表，第二个是标题，第三个是Pic,第四个是描述，第五个是链接，
+  搜索: '.fed-part-layout&&dl;.fed-part-eone&&Text;.fed-list-pics.fed-lazy&&data-original;.fed-deta-images&&Text;.fed-rims-info&&href', //第一个是列表，第二个是标题，第三个是Pic,第四个是描述，第五个是链接，
 
   // 搜索: `js:
   // // console.log("aaaa")
