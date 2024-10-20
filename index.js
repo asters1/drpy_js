@@ -6,7 +6,7 @@ var test_class = {}
 var test_filter = {}
 // var js_env = {}
 
-// printGreen('\n================预处理=================\n\n')
+console.log('\n正在执行预处理...\n')
 // js_env.rule = rule
 var init_obj = await JxInit(js_env_path)
 try {
@@ -17,7 +17,7 @@ try {
 } catch {}
 
 // printGreen(JSON.stringify(js_env_path.rule_fetch_params))
-printGreen('\n================预处理结束=================\n\n')
+console.log('\n================预处理结束=================\n\n')
 // process.exit(0)
 if (cfg.skip_request) {
   vod = cfg.vod

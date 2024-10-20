@@ -22,14 +22,14 @@ var rule = {
   title: ``,
   //网页的域名根,包含http头如 https://www,baidu.com
   host: '',
-  //网站的分类页面链接
-  url: '',
-  //网站的请求头,完整支持所有的,常带ua和cookies
-  headers: { 'User-Agent': 'IOS_UA', Referer: '' },
   //静态分类名称拼接
   class_name: '电影&电视剧&动漫',
   //静态分类标识拼接
   class_url: 'dianying&dianshiju&dongman',
+  //网站的分类页面链接
+  url: '',
+  //网站的请求头,完整支持所有的,常带ua和cookies
+  headers: { 'User-Agent': 'IOS_UA', Referer: '' },
   //搜索链接 可以是完整路径或者相对路径,**代表搜索词 fypage代表页数
   searchUrl: '',
   //是否启用全局搜索
