@@ -257,7 +257,13 @@ printGreen('\r\n测试的播放flag是:' + test_play_flag + '\n')
 printGreen('\n\n================lazy=================\n\n')
 var playObj = { url: test_play_url, flag: test_play_flag, flags: [] }
 playObj.input = test_play_url
-var res_play_str = await JxPlay(playObj)
+var playEnv = playObj
+
+playEnv.playObj = JSON.parse(JSON.stringify(playObj))
+playEnv.lazy = js_env_path.rule.lazy
+playEnv.rule = js_env_path.rule
+playEnv.rule_fetch_params = js_env_path.rule_fetch_params
+var res_play_str = await JxPlay(playEnv)
 
 // {
 //   parse: 1,
