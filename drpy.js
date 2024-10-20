@@ -446,8 +446,9 @@ async function pre(js_env) {
  * @returns {string}
  */
 async function categoryParse(cateObj) {
+  // console.log(cateObj)
+  fetch_params = cateObj.rule_fetch_params
   // console.log(rule)
-  fetch_params = JSON.parse(JSON.stringify(rule_fetch_params))
   let p = cateObj.一级
   if (!p || typeof p !== 'string') {
     return '{}'
@@ -657,7 +658,9 @@ async function categoryParse(cateObj) {
  * @returns {string}
  */
 async function searchParse(searchObj) {
-  fetch_params = JSON.parse(JSON.stringify(rule_fetch_params))
+  // console.log(searchObj)
+  fetch_params = searchObj.rule_fetch_params
+
   let d = []
   if (!searchObj.searchUrl) {
     return '{}'
@@ -667,6 +670,7 @@ async function searchParse(searchObj) {
     return '{}'
   }
   p = p.trim()
+  // console.log(p)
   let pp = rule.一级.split(';')
   let url = searchObj.searchUrl.replaceAll('**', searchObj.wd)
   if (
@@ -701,7 +705,7 @@ async function searchParse(searchObj) {
     }
   }
 
-  MY_URL = searchObj.host + url
+  MY_URL = searchObj.rule.host + url
   // console.log(MY_URL)
   // log(searchObj.搜索);
   // setItem('MY_URL',MY_URL);
@@ -718,9 +722,11 @@ async function searchParse(searchObj) {
       SETRESULT_REGEX,
       ' console.log(JSON.stringify($1($2))) ',
     )
-    var Js_Env = {}
-    Js_Env.input = input
-    Js_Code = `import "./drpy.js"\n\n` + env_to_jscode(Js_Env) + '\n' + Js_Code
+    // var Js_Env = {}
+    searchObj.input = input
+    // Js_Env.input = input
+    Js_Code =
+      `import "./drpy.js"\n\n` + env_to_jscode(searchObj) + '\n' + Js_Code
     try {
       var res_search = await evals(Js_Code)
     } catch (e) {
@@ -874,6 +880,7 @@ async function searchParse(searchObj) {
  * @returns {string}
  */
 async function detailParse(detailObj) {
+  // console.log(detailObj)
   let t1 = new Date().getTime()
   fetch_params = JSON.parse(JSON.stringify(rule_fetch_params))
   let orId = detailObj.orId
@@ -900,6 +907,7 @@ async function detailParse(detailObj) {
     vod_content: '简介',
   }
   let p = detailObj.二级
+  // console.log(p)
   let url = detailObj.url
   let detailUrl = detailObj.detailUrl
   let fyclass = detailObj.fyclass
@@ -929,9 +937,10 @@ async function detailParse(detailObj) {
     var Js_Env = {}
     var Js_Code = p.trim().replace('js:', '')
     Js_Code = Js_Code.replaceAll('request(', 'await request(')
-    Js_Env.input = detailObj.input
-    Js_Env.VOD = {}
-    Js_Code = `import "./drpy.js"\n\n` + env_to_jscode(Js_Env) + '\n' + Js_Code
+    // Js_Env.input = detailObj.input
+    // Js_Env.VOD = {}
+    Js_Code =
+      `import "./drpy.js"\n\n` + env_to_jscode(detailObj) + '\n' + Js_Code
     Js_Code = Js_Code + '\n\nconsole.log(JSON.stringify(VOD));'
     try {
       var res_detail = await evals(Js_Code)
@@ -1082,7 +1091,7 @@ async function detailParse(detailObj) {
       }
       // console.log(JSON.stringify(playFrom))
     } else {
-      playFrom = ['道长在线']
+      playFrom = ['道���在线']
     }
     vod.vod_play_from = playFrom.join(vod_play_from)
 
@@ -1213,7 +1222,7 @@ async function playParse(playObj) {
   }
   MY_URL = decodeURIComponent(MY_URL)
   var input = MY_URL //注入给免嗅js
-  var flag = MY_FLAG //注入播放线路名称给免嗅js
+  var flag = MY_FLAG //注入播放线路名称��免嗅js
   let common_play = {
     parse: 1,
     url: input,

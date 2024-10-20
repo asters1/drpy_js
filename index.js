@@ -24,9 +24,18 @@ if (cfg.skip_request) {
 } else {
   if (cfg.search_switch) {
     printGreen('\n================搜索=================\n\n')
-    rule.pg = cfg.test_page
-    rule.wd = cfg.search_keyword
-    var res_search_str = await JxSearch(rule)
+    var searchObj = {}
+
+    searchObj.pg = cfg.test_page
+    searchObj.wd = cfg.search_keyword
+    searchObj.搜索 = js_env_path.rule.搜索
+    searchObj.searchUrl = js_env_path.rule.searchUrl
+    var searchEnv = searchObj
+
+    searchEnv.searchObj = JSON.parse(JSON.stringify(searchObj))
+    searchEnv.rule = js_env_path.rule
+    searchEnv.rule_fetch_params = js_env_path.rule_fetch_params
+    var res_search_str = await JxSearch(searchEnv)
     var res_search = JSON.parse(res_search_str)
     if (res_search.list == undefined) {
       console.log('获取搜索列表失败!!')
@@ -130,8 +139,13 @@ if (cfg.skip_request) {
       cateObj.pg = cfg.test_page
       cateObj.filter = true
       cateObj.extend = test_filter.extend
+      var cateEnv = cateObj
+      cateEnv.cateObj = JSON.parse(JSON.stringify(cateObj))
+      cateEnv.rule = js_env_path.rule
+      cateEnv.rule_fetch_params = js_env_path.rule_fetch_params
+
       // console.log(JSON.stringify(cateObj))
-      var res_cate = await JxCategory(cateObj)
+      var res_cate = await JxCategory(cateEnv)
       var res_cate_obj = JSON.parse(res_cate)
 
       // process.exit(0)
@@ -166,13 +180,21 @@ printGreen(
   '\r\n你测试的视频是:' + vod['vod_name'] + '[' + vod['vod_id'] + ']\n',
 )
 printGreen('================二级=================\n\n')
+var detailObj = {}
 
-rule.orId = vod['vod_id']
-rule.input = vod['vod_id']
-rule.tab_exclude = '猜你|喜欢|下载|剧情|热播'
+detailObj.orId = vod['vod_id']
+detailObj.input = vod['vod_id']
+detailObj.二级 = js_env_path.rule.二级
+detailObj.tab_exclude = '猜你|喜欢|下载|剧情|热播'
+
+var detailEnv = detailObj
+detailEnv.detailObj = JSON.parse(JSON.stringify(detailObj))
+detailEnv.rule = js_env_path.rule
+detailEnv.rule_fetch_params = js_env_path.rule_fetch_params
+detailEnv.VOD = {}
 
 // process.exit(0)
-var res_detail_str = await JxDetail(rule)
+var res_detail_str = await JxDetail(detailObj)
 try {
   var res_detail = JSON.parse(res_detail_str)
 } catch {

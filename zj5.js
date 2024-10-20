@@ -232,7 +232,7 @@ var rule = {
   tab_order: [], //线路顺序,按里面的顺序优先，没写的依次排后面
   tab_rename: {}, //线路名替换如:lzm3u8替换为量子资源
   预处理: `js:
-  // rule_fetch_params.headers.kk="fjjfjfjj"
+  // rule.host="fjjfjfjj"
 
   `,
   // 推荐: '.v-list;div.item;*;*;*;*', //这里可以为空，这样点播不会有内容
@@ -240,7 +240,7 @@ var rule = {
 
   // 一级: '.fed-list-info&&li;.fed-list-title&&Text;.fed-list-pics&&data-original;.fed-list-remarks&&Text;.fed-list-pics&&href',
   一级: `js:
-
+// console.log()
   pdfh = jsp.pdfh
   pdfa = jsp.pdfa
   pd = jq.pd
@@ -277,7 +277,7 @@ var rule = {
   //   list_text: 'a&&Text',
   // },
   二级: `js:
-  // console.log(input)
+  // console.log(rule.host)
   //
   pdfh = jsp.pdfh;
   pd = jsp.pd;
@@ -292,7 +292,7 @@ var rule = {
     VOD.vod_area=pdfh(html1,".fed-deta-content&&.fed-part-rows&&li:eq(4)&&Text").replace("地区：","").trim()
     VOD.vod_year=pdfh(html1,".fed-deta-content&&.fed-part-rows&&li:eq(2)&&a&&Text")
     VOD.vod_remarks=pdfh(html1,".fed-list-remarks&&Text")
-    VOD.vod_director=pdfh(html1,".fed-deta-content&&.fed-part-rows&&li:eq(1)&&Text").replace("导演：","").trim()
+    VOD.vod_director=pdfh(html1,".fed-deta-content&&.fed-part-rows&&li:eq(1)&&Text").replace("导��：���","").trim()
     VOD.vod_content=pdfh(html1,".fed-conv-text.fed-padding.fed-text-muted&&Text")
     let play_from=[]
     let pf=pdfa(html1,".fed-tabs-boxs&&.fed-tabs-foot&&li")
@@ -325,35 +325,35 @@ var rule = {
     log('获取二级详情页发生错误:' + e.message)
   }
   `,
-  搜索: '.fed-part-layout&&dl;.fed-part-eone&&Text;.fed-list-pics.fed-lazy&&data-original;.fed-deta-images&&Text;.fed-rims-info&&href', //第一个是列表，第二个是标题，第三个是Pic,第四个是描述，第五个是链接，
+  // 搜索: '.fed-part-layout&&dl;.fed-part-eone&&Text;.fed-list-pics.fed-lazy&&data-original;.fed-deta-images&&Text;.fed-rims-info&&href', //第一个是列表，第二个是标题，第三个是Pic,第四个是描述，第五个是链接，
 
-  // 搜索: `js:
-  // // console.log("aaaa")
-  // pdfh=jsp.pdfh;
-  // pdfa=jsp.pdfa;
-  // pd=jsp.pd;
-  // var d = [];
-  // var html = request(input);
-  //
-  // var list=pdfa(html,".fed-part-layout&&dl")
-  // for(var i=0;i<=list.length-1;i++){
-  //   var v={}
-  //   v.url=pd(list[i],".fed-rims-info&&href")
-  //   v.title=pdfh(list[i],".fed-part-eone&&Text")
-  //   v.desc=pdfh(list[i],".fed-deta-images&&Text")
-  //   v.content=pdfh(list[i],".fed-part-eone&&Text")
-  //   v.img=pd(list[i],".fed-list-pics.fed-lazy&&data-original")
-  //   d.push(v)
-  //
-  //   // console.log(JSON.stringify(v))
-  // }
-  // setResult(d)
-  //
-  //
-  //
-  //
-  //
-  // `, //第一个是列表，第二个是标题，第三个是Pic,第四个是描述，第五个是链接，
+  搜索: `js:
+  // console.log("aaaa")
+  pdfh=jsp.pdfh;
+  pdfa=jsp.pdfa;
+  pd=jsp.pd;
+  var d = [];
+  var html = request(input);
+
+  var list=pdfa(html,".fed-part-layout&&dl")
+  for(var i=0;i<=list.length-1;i++){
+    var v={}
+    v.url=pd(list[i],".fed-rims-info&&href")
+    v.title=pdfh(list[i],".fed-part-eone&&Text")
+    v.desc=pdfh(list[i],".fed-deta-images&&Text")
+    v.content=pdfh(list[i],".fed-part-eone&&Text")
+    v.img=pd(list[i],".fed-list-pics.fed-lazy&&data-original")
+    d.push(v)
+
+    // console.log(JSON.stringify(v))
+  }
+  setResult(d)
+
+
+
+
+
+  `, //第一个是列表，第二个是标题，第三个是Pic,第四个是描述，第五个是链接，
   lazy: `js:
   var play_u=""
   var html1=request(input)
