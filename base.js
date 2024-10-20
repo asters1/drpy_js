@@ -31,6 +31,9 @@ var rule = {
   tab_order: [],
   //线路名替换如:lzm3u8替换为量子资源
   tab_rename: {},
+  // js写法，仅js模式1有效.可以用于代码动态获取全局cookie之类的
+  // 可操作变量有 rule_fetch_params,rule,以及基础的网页访问request,post等操作
+  预处理: ``,
   //第一个是列表，第二个是标题，第三个是Pic,第四个是描述，第五个是链接，
   搜索: ``,
   一级: ``,
