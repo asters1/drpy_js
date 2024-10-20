@@ -18,7 +18,7 @@ var cfg = {
   //搜索关键字
   search_keyword: '斗罗大陆',
   //测试的类型的下标从0开始(电影,电视剧...)
-  test_type_index: 0,
+  test_type_index: 2,
   //筛选类型的第几个的下标(如:类型，地区，语言，年份....)
   filter_type_index: 0,
   //测试筛选的下标

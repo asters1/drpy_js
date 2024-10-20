@@ -139,6 +139,10 @@ if (cfg.skip_request) {
       cateObj.pg = cfg.test_page
       cateObj.filter = true
       cateObj.extend = test_filter.extend
+      // console.log(test_filter.extend)
+      if (cateObj.extend == undefined) {
+        cateObj.extend = {}
+      }
       var cateEnv = cateObj
       cateEnv.cateObj = JSON.parse(JSON.stringify(cateObj))
       cateEnv.rule = js_env_path.rule
@@ -281,7 +285,7 @@ var res_play_str = await JxPlay(playEnv)
 try {
   var res_play = JSON.parse(res_play_str)
 } catch {
-  console.log('解析lazy失败!!\n')
+  console.log('解析lazy失���!!\n')
   console.log(res_play_str)
   process.exit(1)
 }
