@@ -4,7 +4,14 @@ var test_play_url = ''
 var test_play_flag = ''
 var test_class = {}
 var test_filter = {}
+// var js_env = {}
 
+// printGreen('\n================预处理=================\n\n')
+// js_env.rule = rule
+
+printGreen(JSON.stringify(js_env_path))
+printGreen('\n================预处理结束=================\n\n')
+process.exit(0)
 if (cfg.skip_request) {
   vod = cfg.vod
 } else {

@@ -53,6 +53,7 @@ const TAB_EXCLUDE = '猜你|喜欢|下载|剧情|热播'
 // =================自定义函数=======================
 //初始化环境
 function init(js_path) {
+  let js_env_path = {}
   let js_data =
     R_File(js_path) +
     `
@@ -65,12 +66,14 @@ JSON.stringify(rule)
     timeout: rule.timeout,
     encoding: rule.encoding,
   }
-  fetch_params = JSON.parse(JSON.stringify(rule_fetch_params))
+  js_env_path.rule = rule
+  js_env_path.rule_fetch_params = rule_fetch_params
+  // fetch_params = JSON.parse(JSON.stringify(rule_fetch_params))
   // console.log(rule.host(0:-1))
   MY_URL = getHome(rule.host)
 
   // console.log(rule_fetch_params)
-  return rule
+  return js_env_path
 }
 
 // 读文件
@@ -392,6 +395,31 @@ async function request(url, obj, ocr_flag) {
     return JSON.stringify(htmlWithHeaders)
   } else {
     return html
+  }
+}
+
+/**
+ * 执行预处理代码
+ */
+async function pre(js_env) {
+  if (typeof rule.预处理 === 'string' && rule.预处理 && rule.预处理.trim()) {
+    let code = rule.预处理.trim()
+    console.log('执行预处理代码:' + code)
+    if (code.startsWith('js:')) {
+      code = code.replace('js:', '')
+    }
+    try {
+      // code里可以进行get 或者 post请求cookie并改变rule.headers 里的cookie
+      //  直接操作 rule_fetch_params 这个变量 .headers.Cookie
+      let Js_Code =
+        '\n//========================以上是环境变量=============\n' + code
+      Js_Code = Js_Code.replaceAll('request(', 'await request(')
+      Js_Code = `import "./drpy.js"\n\n` + env_to_jscode(js_env) + Js_Code
+      await evals(Js_Code)
+      // eval(code)
+    } catch (e) {
+      console.log('预处理执行失败:' + e.message)
+    }
   }
 }
 /**
@@ -1973,9 +2001,10 @@ JSON.stringify(cfg)
   `,
   ),
 )
-rule = init(cfg.test_file)
+var js_env_path = init(cfg.test_file)
 //全局
-globalThis.rule = rule
+globalThis.rule = js_env_path.rule
+globalThis.js_env_path = js_env_path
 globalThis.cfg = cfg
 //函数
 globalThis.printGreen = printGreen
