@@ -8,10 +8,17 @@ var test_filter = {}
 
 // printGreen('\n================预处理=================\n\n')
 // js_env.rule = rule
+var init_obj = await JxInit(js_env_path)
+try {
+  js_env_path.rule = init_obj.rule
+} catch {}
+try {
+  js_env_path.rule_fetch_params = init_obj.rule_fetch_params
+} catch {}
 
-printGreen(JSON.stringify(js_env_path))
+// printGreen(JSON.stringify(js_env_path.rule_fetch_params))
 printGreen('\n================预处理结束=================\n\n')
-process.exit(0)
+// process.exit(0)
 if (cfg.skip_request) {
   vod = cfg.vod
 } else {

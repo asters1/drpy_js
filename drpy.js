@@ -404,7 +404,7 @@ async function request(url, obj, ocr_flag) {
 async function pre(js_env) {
   if (typeof rule.预处理 === 'string' && rule.预处理 && rule.预处理.trim()) {
     let code = rule.预处理.trim()
-    console.log('执行预处理代码:' + code)
+    // console.log('执行预处理代码:' + code)
     if (code.startsWith('js:')) {
       code = code.replace('js:', '')
     }
@@ -415,7 +415,25 @@ async function pre(js_env) {
         '\n//========================以上是环境变量=============\n' + code
       Js_Code = Js_Code.replaceAll('request(', 'await request(')
       Js_Code = `import "./drpy.js"\n\n` + env_to_jscode(js_env) + Js_Code
-      await evals(Js_Code)
+      Js_Code =
+        Js_Code +
+        `\n//========================返回=============\n\n
+        console.log(JSON.stringify({rule:rule,rule_fetch_params:rule_fetch_params}))`
+      try {
+        var res_init_str = await evals(Js_Code)
+      } catch (e) {
+        console.log('预处理JS执行失败:' + e.message)
+        process.exit(1)
+      }
+      try {
+        var res_init_obj = JSON.parse(res_init_str)
+      } catch (e) {
+        console.log(res_init_str)
+        console.log('转化出错!')
+        process.exit(1)
+      }
+      return res_init_obj
+
       // eval(code)
     } catch (e) {
       console.log('预处理执行失败:' + e.message)
@@ -528,7 +546,7 @@ async function categoryParse(cateObj) {
       VODS = JSON.parse(res_cate)
     } catch {
       console.log(res_cate)
-      console.log('转化出错!')
+      console.log('json转化出错!')
       process.exit(1)
     }
     d = VODS
@@ -927,7 +945,7 @@ async function detailParse(detailObj) {
       var res = JSON.parse(res_detail)
     } catch {
       console.log(res_detail)
-      console.log('转化出错!')
+      console.log('json转化出错!')
       process.exit(1)
     }
     VOD = res
@@ -1076,7 +1094,7 @@ async function detailParse(detailObj) {
         print('开始执行lists代码:' + p.lists)
         try {
           if (html && _impJQP && typeof html !== 'string') {
-            // 假装是jq的对象拿来转换一下字符串,try为了防止json的情况报错
+            // 假装是jq的对象拿来转换一下字符��,try为了防止json的情况报错
             try {
               html = html.rr(html.ele).toString()
             } catch (e) {}
@@ -2024,6 +2042,8 @@ globalThis.pdfa = undefined
 globalThis.pd = undefined
 globalThis.setResult = setResult
 //解析
+
+globalThis.JxInit = pre
 globalThis.categoryParse = categoryParse
 globalThis.JxCategory = categoryParse
 globalThis.searchParse = searchParse

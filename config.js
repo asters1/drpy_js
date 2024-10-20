@@ -9,8 +9,8 @@ var cfg = {
   search_switch: false,
   // search_switch: true,
   //跳过一级或者搜索,可以不用发起请求，,但是要赋值给vod
-  skip_request: false,
-  // skip_request: true,
+  // skip_request: false,
+  skip_request: true,
   vod: {
     vod_id: 'https://zhuiju4.cc/wushan/51769',
     vod_name: '斗罗大陆2：绝世唐门2023',

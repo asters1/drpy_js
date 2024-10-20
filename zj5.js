@@ -231,6 +231,10 @@ var rule = {
   tab_remove: [], //移除某个线路及相关的选集
   tab_order: [], //线路顺序,按里面的顺序优先，没写的依次排后面
   tab_rename: {}, //线路名替换如:lzm3u8替换为量子资源
+  预处理: `js:
+  // rule_fetch_params.headers.kk="fjjfjfjj"
+
+  `,
   // 推荐: '.v-list;div.item;*;*;*;*', //这里可以为空，这样点播不会有内容
   //第一个是列表，第二个是标题，第三个是Pic,第四个是描述，第五个是链接，
 
