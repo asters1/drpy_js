@@ -9,11 +9,17 @@ var cfg = {
   search_switch: false,
   // search_switch: true,
   //跳过一级或者搜索,可以不用发起请求，,但是要赋值给vod
-  skip_request: false,
-  // skip_request: true,
+  // skip_one: false,
+  skip_one: true,
   vod: {
     vod_id: 'mzc002005rut2qj',
     vod_name: '奇妙萌可之闪耀流',
+  },
+  //跳过二级,可以不用发起请求，,但是要赋值给vod
+  skip_two: true,
+  test_two_vod: {
+    url: 'https://v.qq.com/x/cover/jo9b2oxhk5f3jlx/v0020cq94ic.html',
+    flag: 'qq',
   },
   //搜索关键字
   search_keyword: '斗罗大陆',

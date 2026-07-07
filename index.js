@@ -19,7 +19,7 @@ try {
 // printGreen(JSON.stringify(js_env_path.rule_fetch_params))
 console.log('\n================预处理结束=================\n\n')
 // process.exit(0)
-if (cfg.skip_request) {
+if (cfg.skip_one) {
   vod = cfg.vod
 } else {
   if (cfg.search_switch) {
@@ -184,6 +184,12 @@ printGreen(
   '\r\n你测试的视频是:' + vod['vod_name'] + '[' + vod['vod_id'] + ']\n',
 )
 printGreen('================二级=================\n\n')
+if (cfg.skip_two){
+  test_play_url=cfg.test_two_vod.url
+  test_play_flag=cfg.test_two_vod.flag
+
+}else{
+
 var detailObj = {}
 
 detailObj.orId = vod['vod_id']
@@ -255,7 +261,7 @@ if (vod_play_from_list.length == vod_play_url_list.length) {
   console.log('vod_play_from和vod_play_url长度不相等，请检查!')
   process.exit(1)
 }
-
+}
 printGreen('\r\n测试的播放URL是:' + test_play_url + '\n')
 printGreen('\r\n测试的播放flag是:' + test_play_flag + '\n')
 printGreen('\n\n================lazy=================\n\n')
