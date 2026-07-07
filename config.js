@@ -1,7 +1,7 @@
 var cfg = {
   //测试的js文件路径
-  test_file: './xhs.js',
-  // test_file: './base.js',
+  // test_file: './xhs.js',
+  test_file: './tx.js',
   //打印开关
   print_switch: false,
   // print_switch: true,
@@ -12,8 +12,8 @@ var cfg = {
   skip_request: false,
   // skip_request: true,
   vod: {
-    vod_id: 'https://zhuiju4.cc/wushan/51769',
-    vod_name: '斗罗大陆2：绝世唐门2023',
+    vod_id: 'mzc002005rut2qj',
+    vod_name: '奇妙萌可之闪耀流',
   },
   //搜索关键字
   search_keyword: '斗罗大陆',

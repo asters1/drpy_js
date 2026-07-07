@@ -4,6 +4,9 @@ import { Uri, _ } from './libs/cat.js'
 import fs from 'fs'
 import './libs/cat_index.js'
 import { exec } from 'child_process'
+// ES Module
+import CryptoJS from 'crypto-js';
+
 
 var rule = {}
 var cfg = {}
@@ -2033,6 +2036,7 @@ var js_env_path = init(cfg.test_file)
 globalThis.rule = js_env_path.rule
 globalThis.js_env_path = js_env_path
 globalThis.cfg = cfg
+globalThis.CryptoJS = CryptoJS
 //函数
 globalThis.printGreen = printGreen
 globalThis.printGrey = printGrey
