@@ -16,9 +16,10 @@ var cfg = {
     vod_name: '奇妙萌可之魔法笑园',
   },
   //跳过二级,可以不用发起请求，,但是要赋值给vod
-  // skip_two: true,
+  // skip_two: false,
+  skip_two: true,
   test_two_vod: {
-    url: 'https://v.qq.com/x/cover/jo9b2oxhk5f3jlx/v0020cq94ic.html',
+    url: '{"cid":"mzc00200c5cy2hh","vid":"d4102fmr4h1"}',
     flag: 'qq',
   },
   //搜索关键字
