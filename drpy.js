@@ -2044,6 +2044,7 @@ globalThis.printMagenta = printMagenta
 globalThis.printDefault = printDefault
 globalThis.encodeUrl = urlencode
 globalThis.urlencode = urlencode
+globalThis.urljoin2 = urljoin2
 //可以在rule中使用的变量与函数
 globalThis.jsp = parseTags.jsp
 globalThis.log = print
